@@ -10,9 +10,9 @@ namespace AlpacaAccountHub.AlpacaRequests
 {
     public class AssetTradeable
     {
-        private static string API_KEY = "AKNAAUM8WUU4Q2EJ7JLA";
+        private static string API_KEY = "";
 
-        private static string API_SECRET = "wZwk020Ad0Axjxy80DADKJoAze3SfEtu1ymBRcc3";
+        private static string API_SECRET = "";
 
         public async Task<AlpacaAccountData> AccountInfo()
         {
