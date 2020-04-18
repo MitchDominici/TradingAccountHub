@@ -1,0 +1,63 @@
+﻿@page "/top-twenty-gainers"
+@using AlpacaAccountHub.Data.SymbolData
+@using AlpacaAccountHub.PolygonRequests
+@inject Snapshot TopTwenty
+@inject Snapshot RunTopTwenty
+
+
+
+<h1>Top 20 Gainers</h1>
+
+<p>This component displays the top 20 gainers under $5 a share and a volume greater than 500,000.</p>
+
+@if (symbolsList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table id="topGainers" @bind="symbolsList">
+        <thead>
+            <tr>
+
+                <th>Symbol/Ticker</th>
+                <th>Today's Percentage Change</th>
+                <th>Today's Dollar Change</th>
+                <th>Last Trade Price</th>
+                <th>Last Minute Close</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var symbol in symbolsList)
+            {
+                @foreach (var stock in symbol.tickerDetails)
+                {
+                    <tr>
+
+                        <td>@stock.ticker</td>
+                        <td class="postiveGain">@stock.todaysChangePerc%</td>
+                        <td>@stock.todaysChange</td>
+                        <td>@stock.lastTradePrice</td>
+                        <td>@stock.previousDayClose</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    
+}
+
+
+
+@code {
+    private List<Symbols> symbolsList;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        symbolsList = await RunTopTwenty.RunTopTwenty();
+        StateHasChanged();
+    }
+
+   
+
+}

@@ -1,0 +1,13 @@
+﻿@page "/"
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<h1>Welcome to your Alpaca Account Hub!</h1>
+
+@code {
+    async Task LogUsername()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+       
+    }
+}

@@ -1,0 +1,144 @@
+﻿@page "/order"
+@using AlpacaAccountHub.AlpacaRequests
+@using AlpacaAccountHub.Data
+@using AlpacaAccountHub.Data.AlpacaAccount
+@using AlpacaAccountHub.Data.SymbolData
+@using AlpacaAccountHub.PolygonRequests
+
+
+@inject AlpacaAccountInfo AccountInfo
+@inject Snapshot SingleTicker
+
+
+
+<h1>Order Hub</h1>
+
+
+@if (accountInfo == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @if (accountInfo.numberOfDayTrades == 4 || accountInfo.dayTradingPower == 1)
+    {
+        <h2 style="color:red;">Cannot make day trades today (@accountInfo.today)</h2>
+    }
+    else
+    {
+        <form id="searchTicker" @onsubmit="SearchSymbol" ></form>
+        <form id="submitOrder" method="post"></form>
+
+        <div class="container">
+
+            <div class="flex">
+                <label for="symbol">Symbol:</label>
+                <input type="text" id="symbol"  size="5" onChange="hiddenValue(this)" style="text-transform:uppercase"  >
+                <input type="hidden"  id="searchSymbolValue" bind-value-onchange="@symbolLookup" form="searchTicker"> 
+                <p>@symbolLookup</p>
+                <input id="searchSymbolButton" type="submit" name="searchSymbol" value="Search" form="searchTicker" >
+            </div>
+
+            <div class="side">
+                <label for="side">Buy/Sell:</label>
+                <select id="side" form="submitOrder">
+                    <option value="">-- Select a side --</option>
+                    <option value="buy">Buy</option>
+                    <option value="sell">SELL</option>
+                </select>
+            </div>
+
+            <div class="limitPrice">
+                <label for="limitPrice">Limit Price:</label>
+                <input id="limitPrice" type="text" size="5">
+            </div>
+
+            <div class="quantity">
+                <label for="quantity"># Shares:</label>
+                <input type="text" list="quantity" size="6" />
+                <datalist id="quantity" form="submitOrder">
+                    <option value="50">50</option>
+                    <option value="75">75</option>
+                    <option value="100">100</option>
+                    <option value="125">125</option>
+                    <option value="150">150</option>
+                    <option value="175">175</option>
+                    <option value="200">200</option>
+                    <option value="225">225</option>
+                    <option value="250">250</option>
+                </datalist>
+
+            </div>
+
+            <div class="type">
+                <label for="type">Order Type:</label>
+                <select id="type" form="submitOrder">
+                    <option value="limit">Limit</option>
+                    <option value="market">Market</option>
+                    <option value="stopLimit">Stop Limit</option>
+                </select>
+            </div>
+
+            <div class="timeInForce">
+                <label for="timeInForce">Time in Force:</label>
+                <select id="timeInForce" form="submitOrder">
+                    <option value="gtc">Good Till Cancel (GTC)</option>
+                    <option value="fok">Fill or Kill</option>
+                    <option value="day">Day</option>
+                </select>
+            </div>
+            <!--
+            <div>
+                <label for="stopPrice">Stop Price</label>
+                <input id="stopPrice" type="text">
+            </div>
+            -->
+            <div>
+                <input id="submitOrderButton" type="submit" name="submitOrder" form="submitOrder" value="Submit Order" class="submitOrder">
+            </div>
+        </div>
+
+        <div>
+            <table>
+                <thead>
+                    <tr>
+
+                        <th>Last Minute Close</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+
+                        <td>@searchedSymbol.minuteClose</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    }
+}
+
+@code {
+    Snapshot single = new Snapshot();
+    private AlpacaAccountData accountInfo;
+    private OrdersData order = new OrdersData();
+    private TickerDetails searchedSymbol = new TickerDetails();
+
+    [Parameter]
+    public string symbolLookup { get; set; }
+
+    [Parameter]
+    public EventCallback<EventArgs> symbolLookupChanged { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        accountInfo = await AccountInfo.AccountInfo();
+    }
+
+    private void  SearchSymbol(EventArgs e)
+    {
+        searchedSymbol = SingleTicker.SingleTicker(symbolLookup);
+    }
+}
