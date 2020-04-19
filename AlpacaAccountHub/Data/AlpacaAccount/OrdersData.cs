@@ -15,18 +15,18 @@ namespace AlpacaAccountHub.Data.AlpacaAccount
         public string quantity { get; set; }
 
         [Required]
-        string side { get; set; }
+        public string side { get; set; }
 
         [Required]
-        string type { get; set; }
+        public string type { get; set; }
 
         [Required]
-        string timeInForce { get; set; }
+        public string timeInForce { get; set; }
 
         [Required]
-        string limitPrice { get; set; }
+        public string limitPrice { get; set; }
 
-        string stopPrice { get; set; }
+        public string stopPrice { get; set; }
     }
 
     public class SymbolLookup

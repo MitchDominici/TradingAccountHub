@@ -11,9 +11,9 @@ namespace AlpacaAccountHub.AlpacaRequests
 {
     public class AlpacaAccountInfo
     {
-        private static string API_KEY = "{your key here}";
+        private static string API_KEY = "";
 
-        private static string API_SECRET = "{your secret here}";
+        private static string API_SECRET = "";
 
         public async Task<AlpacaAccountData> AccountInfo()
         {
@@ -23,7 +23,7 @@ namespace AlpacaAccountHub.AlpacaRequests
             AlpacaAccountData accountDetailsData = new AlpacaAccountData();
 
             // First, open the API connection
-            var client = Alpaca.Markets.Environments.Live
+            var client = Alpaca.Markets.Environments.Paper
                 .GetAlpacaTradingClient(new SecretKey(API_KEY, API_SECRET));
 
             var account = await client.GetAccountAsync();
@@ -31,6 +31,7 @@ namespace AlpacaAccountHub.AlpacaRequests
             accountInfo.numberOfDayTrades = account.DayTradeCount;
             accountInfo.dayTradingPower = account.DayTradingBuyingPower;
             accountInfo.today = today;
+            
 
             var accountDetailsJson = JsonConvert.SerializeObject(accountInfo);
             accountDetailsData =

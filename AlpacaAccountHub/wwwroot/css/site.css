@@ -1,12 +1,20 @@
-@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
-
-.flex {
+/*force the input for symbol & search button to line up horizontally */
+.symbolFlex {
     display: flex;
     flex-direction: row;
     display: inline-block;
-    margin-left: 5px;
+    margin-left: 0px;
 }
+
+.sideFlex {
+    display: flex;
+    flex-direction: row;
+    display: inline-block;
+    margin-left: 90px;
+}
+
 input[type=text], select, textarea {
     padding: 12px; /* Some padding */
     border: 1px solid #ccc; /* Gray border */
@@ -14,25 +22,71 @@ input[type=text], select, textarea {
     box-sizing: border-box; /* Make sure that padding and width stays in place */
     margin-top: 6px; /* Add a top margin */
     margin-bottom: 8px; /* Bottom margin */
-    
+    width: 25%;
+    clear: both;
+    text-align: center;
+
 }
 
-.side { margin: 5px; }
+label {
+    display: inline-block;
+    width: 140px;
+    text-align: right;
+}
 
-/* Style the submit button with a specific background color etc */
-#searchSymbolButton {
-    background-color: darkorange;
+​
+.side {
+    margin: 5px;
+}
+
+.buyButton {
+    background-color: #279400;
     color: white;
+    font-size: 16px;
     padding: 6px 12px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     margin: 4px 2px;
-    font-size: 12px;
 }
 
+    .buyButton:hover {
+        background-color: #3ce300
+    }
+
+    .divider {
+    width: 75px;
+    height: auto;
+    display: inline-block;
+}
+
+.sellButton {
+    background-color: #990a00;
+    color: white;
+    font-size: 16px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 4px 2px;
+}
+.sellButton:hover {
+        background-color: red;
+}
+    /* Style the submit button with a specific background color etc */
+    #searchSymbolButton {
+        background-color: #d17600;
+        color: white;
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 8px 4px;
+        font-size: 12px;
+    }
+
 #submitOrderButton {
-    background-color: indianred;
+    background-color: darkred;
     color: white;
     padding: 8px 16px;
     border: none;
@@ -42,52 +96,160 @@ input[type=text], select, textarea {
     font-size: 14px;
     margin: -20px -50px;
     position: relative;
-    left: 25px;
+    left: 200px;
 }
 
 /* When moving the mouse over the submit button, add a darker green color */
 #searchSymbolButton:hover {
-    background-color: goldenrod;
+    background-color: darkorange;
 }
 
 #submitOrderButton:hover {
-    background-color: darkred;
+    background-color: indianred;
+}
+
+.orderContainer {
+    width: 100%;
+    margin: 0 auto;
+    display: table;
 }
 
 /* Add a background color and some padding around the form */
-.container {
+.buySellContainer {
     border-radius: 5px;
     background-color: #f2f2f2;
     padding: 20px;
-    width: 425px;
+    width: 40%;
     clear: both;
-    margin-left: 5px;
-    text-align: center;
-    height: 450px;
-
+    margin-left: 0px;
     
+    height: 400px;
+    display: table-cell;
 }
-
-#topGainers tr:nth-child(even) {
+.searchedSymbolContainer {
+    border-radius: 5px;
     background-color: #f2f2f2;
+    padding: 20px;
+    width: 60%;
+    clear: both;
+    margin-right: 4px;
+    text-align: center;
+    height: 400px;
+    display: table-cell;
 }
 
-
-#topGainers tr:hover {
-    background-color: #ddd;
+.table-fill {
+    background: white;
+    border-radius: 3px;
+    border-collapse: collapse;
+    height: 320px;
+    margin: auto;
+    max-width: 600px;
+    padding: 5px;
+    width: 100%;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    animation: float 5s infinite;
 }
 
-#topGainers td, #topGainers th {
-    border: 1px solid #ddd;
-    padding: 8px;
+th {
+    color: #D5DDE5;
+    ;
+    background: #1b1e24;
+    border-bottom: 4px solid #9ea7af;
+    border-right: 1px solid #343a45;
+    font-size: 23px;
+    font-weight: 100;
+    padding: 24px;
+    text-align: left;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    vertical-align: middle;
+}
+
+th:first-child {
+    border-top-left-radius: 3px;
+}
+
+th:last-child {
+    border-top-right-radius: 3px;
+    border-right: none;
+}
+
+tr {
+    border-top: 1px solid #C1C3D1;
+    border-bottom-: 1px solid #C1C3D1;
+    color: #666B85;
+    font-size: 16px;
+    font-weight: normal;
+    text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
+}
+
+tr:hover td {
+    background: #4E5066;
+    color: #FFFFFF;
+    border-top: 1px solid #22262e;
+}
+
+tr:first-child {
+    border-top: none;
+}
+
+tr:last-child {
+    border-bottom: none;
+}
+
+tr:nth-child(odd) td {
+    background: #EBEBEB;
+}
+
+tr:nth-child(odd):hover td {
+    background: #4E5066;
+}
+
+tr:last-child td:first-child {
+    border-bottom-left-radius: 3px;
+}
+
+tr:last-child td:last-child {
+    border-bottom-right-radius: 3px;
+}
+
+td {
+    background: #FFFFFF;
+    padding: 20px;
+    text-align: left;
+    vertical-align: middle;
+    font-weight: 300;
+    font-size: 18px;
+    text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+    border-right: 1px solid #C1C3D1;
+}
+
+td:last-child {
+    border-right: 0px;
+}
+
+th.text-left {
+    text-align: left;
+}
+
+th.text-center {
     text-align: center;
 }
-#topGainers th {
-    padding-top: 12px;
-    padding-bottom: 12px;
+
+th.text-right {
+    text-align: right;
+}
+
+td.text-left {
+    text-align: left;
+}
+
+td.text-center {
     text-align: center;
-    background-color:black;
-    color:#ffffff
+}
+
+td.text-right {
+    text-align: right;
 }
 .postiveGain {
     background-color: #7CFC00;

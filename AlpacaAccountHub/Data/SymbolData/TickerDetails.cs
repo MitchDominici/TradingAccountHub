@@ -27,14 +27,15 @@ namespace AlpacaAccountHub.Data.SymbolData
 
         public double minuteClose { get; set; }
 
-        public double todaysChange { get; set; }
+        public string todaysChange { get; set; }
 
-        public double todaysChangePerc { get; set; }
+        public string todaysChangePerc { get; set; }
 
         public double previousDayHigh { get; set; }
 
         public double todaysOpen { get; set; }
 
+        public string tradable { get; set; }
 
     }
 
@@ -109,7 +110,22 @@ namespace AlpacaAccountHub.Data.SymbolData
         public double todaysChange { get; set; }
         public double todaysChangePerc { get; set; }
         public long updated { get; set; }
+        public string id { get; set; }
+        public string @class { get; set; }
+        public string exchange { get; set; }
+        public string symbol { get; set; }
+        public string name { get; set; }
+        public string status { get; set; }
+        public bool tradable { get; set; }
+        public bool marginable { get; set; }
+        public bool shortable { get; set; }
+        public bool easy_to_borrow { get; set; }
     }
 
+    public class TodaysChange
+    {
+        public string todaysChange { get; set; }
+        public string todaysChangePerc { get; set; }
+    }
 
 }

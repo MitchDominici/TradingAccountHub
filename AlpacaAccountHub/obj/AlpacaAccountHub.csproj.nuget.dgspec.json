@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\AlpacaAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj": {}
+    "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-SymbolLookup\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj": {}
   },
   "projects": {
-    "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\AlpacaAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj": {
+    "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-SymbolLookup\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\AlpacaAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
+        "projectUniqueName": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-SymbolLookup\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
         "projectName": "AlpacaAccountHub",
-        "projectPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\AlpacaAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
+        "projectPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-SymbolLookup\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
         "packagesPath": "C:\\Users\\Mitch\\.nuget\\packages\\",
-        "outputPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\AlpacaAccountHub\\AlpacaAccountHub\\obj\\",
+        "outputPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-SymbolLookup\\TradingAccountHub\\AlpacaAccountHub\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Mitch\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -77,6 +77,10 @@
             "Websocket.Client": {
               "target": "Package",
               "version": "[4.2.3, )"
+            },
+            "jQuery": {
+              "target": "Package",
+              "version": "[3.5.0.1, )"
             }
           },
           "imports": [

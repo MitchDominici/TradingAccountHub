@@ -46,6 +46,8 @@ namespace AlpacaAccountHub
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSingleton<Snapshot>();
             services.AddSingleton<AlpacaAccountInfo>();
+            services.AddSingleton<Assets>();
+            services.AddSingleton<PlaceOrder>();
 
             // requires
             // using Microsoft.AspNetCore.Identity.UI.Services;

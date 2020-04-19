@@ -1,6 +1,7 @@
 ﻿@page "/top-twenty-gainers"
 @using AlpacaAccountHub.Data.SymbolData
 @using AlpacaAccountHub.PolygonRequests
+
 @inject Snapshot TopTwenty
 @inject Snapshot RunTopTwenty
 
@@ -16,10 +17,10 @@
 }
 else
 {
-    <table id="topGainers" @bind="symbolsList">
+    <table id="topGainers">
         <thead>
             <tr>
-
+                
                 <th>Symbol/Ticker</th>
                 <th>Today's Percentage Change</th>
                 <th>Today's Dollar Change</th>
@@ -35,7 +36,7 @@ else
                     <tr>
 
                         <td>@stock.ticker</td>
-                        <td class="postiveGain">@stock.todaysChangePerc%</td>
+                        <td class="postiveGain">@stock.todaysChangePerc&percnt;</td>
                         <td>@stock.todaysChange</td>
                         <td>@stock.lastTradePrice</td>
                         <td>@stock.previousDayClose</td>
@@ -50,12 +51,12 @@ else
 
 
 @code {
-    private List<Symbols> symbolsList;
+    private List<Symbols> symbolsList { get; set; }
     
     protected override async Task OnInitializedAsync()
     {
         symbolsList = await RunTopTwenty.RunTopTwenty();
-        StateHasChanged();
+        
     }
 
    

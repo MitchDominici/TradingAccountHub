@@ -11,33 +11,50 @@ using RestClient = RestSharp.RestClient;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
+using AlpacaAccountHub.AlpacaRequests;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace AlpacaAccountHub.PolygonRequests
 {
     public class Snapshot
     {
+        Assets tradeable = new Assets();
+
         public TickerDetails SingleTicker(string symbol)
         {
             TickerDetails tickerDetails = new TickerDetails();
             TickerDetails tickerDetailsData = new TickerDetails();
+            string uri =
+                $"https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers/{symbol}?apiKey=";
+            Console.WriteLine(symbol);
+
+            string response = "";
+
 
             var client =
-                new RestClient(
-                    $"https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers/{symbol}?apiKey={Your-API-Key-HERE}")
+                new RestClient(uri)
                 {
                     Timeout = -1
                 };
+
+            using (StreamReader json =
+                new StreamReader(
+                    @"C:\Day Trading\alpaca\AlpacaAccountHub\feature-SymbolLookup\TradingAccountHub\AlpacaAccountHub\Data\SymbolData\SingleTicker.json")
+            )
+            {
+                response = json.ReadToEnd();
+            }
+
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
-            var responseContent = JObject.Parse(response.Content);
+           // IRestResponse response = client.Execute(request);
+            var responseContent = JObject.Parse(response);
 
             var tickerResponse = responseContent.GetValue("ticker");
             string tickerData = JsonConvert.SerializeObject(tickerResponse);
-
             var tickerContent = JObject.Parse(tickerData);
-
             var ticker = JsonConvert.DeserializeObject<TickerDetails>(tickerData);
+
+            tickerDetails.ticker = ticker.ticker;
 
             var lastTradeResponse = tickerContent.GetValue("lastTrade");
             string lastTradeData = JsonConvert.SerializeObject(lastTradeResponse);
@@ -63,9 +80,24 @@ namespace AlpacaAccountHub.PolygonRequests
             var today = JsonConvert.DeserializeObject<Day>(todayData);
             tickerDetails.todaysOpen = today.o;
 
+            var todaysChangeResponse = tickerContent.GetValue("todaysChange");
+            string todaysChangeData = JsonConvert.SerializeObject(todaysChangeResponse);
+            var newTodaysChangeData = todaysChangeData.Replace("\"","");
+            tickerDetails.todaysChange = newTodaysChangeData;
+            
+
+            var todaysChangePercResponse = tickerContent.GetValue("todaysChangePerc");
+            string todaysChangePercData = JsonConvert.SerializeObject(todaysChangePercResponse);
+            var newTodaysChangePercData = todaysChangePercData.Replace("\"","");
+            tickerDetails.todaysChangePerc = newTodaysChangePercData;
+
+            var assetsTradeable = tradeable.AssetTradable();
+            tickerDetails.tradable = assetsTradeable;
+
             var tickerDetailsJson = JsonConvert.SerializeObject(tickerDetails);
             tickerDetailsData =
                 System.Text.Json.JsonSerializer.Deserialize<TickerDetails>(tickerDetailsJson);
+
 
             return tickerDetailsData;
         }
@@ -78,18 +110,18 @@ namespace AlpacaAccountHub.PolygonRequests
             var tickerDetailsData = new TickerDetails();
             Symbols symbols = new Symbols();
             symbols.tickerDetails = new List<TickerDetails>();
-            //string response = "";
+            string response = "";
 
             var client =
                 new RestClient(
-                    "https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/gainers?apiKey={Your-API-Key-HERE}")
+                    "https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/gainers?apiKey=PK9IDH096J9W59XIWVGR")
                 {
                     Timeout = -1
                 };
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+           // IRestResponse response = client.Execute(request);
             //Console.WriteLine(response.Content);
-            /*
+            
             using (StreamReader json =
                 new StreamReader(
                     @"C:\Day Trading\alpaca\Watchlists\BlazorWatchlist\pennyStockWatchlist\Data\SymbolData\Gainer-test.json")
@@ -97,8 +129,8 @@ namespace AlpacaAccountHub.PolygonRequests
             {
                 response = json.ReadToEnd();
             }
-            */
-            var responseContent = JObject.Parse(response.Content);
+            
+            var responseContent = JObject.Parse(response);
 
         
             int count = 0;

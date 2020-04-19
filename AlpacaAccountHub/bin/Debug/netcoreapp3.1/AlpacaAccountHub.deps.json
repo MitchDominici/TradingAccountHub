@@ -34,6 +34,7 @@
           "RestSharp": "106.10.1",
           "SendGrid": "9.14.0",
           "Websocket.Client": "4.2.3",
+          "jQuery": "3.5.0.1",
           "System.Reactive.Reference": "4.3.0.0",
           "Microsoft.AspNetCore.Antiforgery": "3.1.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "3.1.0.0",
@@ -324,6 +325,7 @@
           "lib/netstandard2.1/Alpaca.Markets.dll": {}
         }
       },
+      "jQuery/3.5.0.1": {},
       "Microsoft.AspNetCore.Cryptography.Internal/3.1.3": {
         "runtime": {
           "lib/netcoreapp3.1/Microsoft.AspNetCore.Cryptography.Internal.dll": {
@@ -4034,6 +4036,13 @@
       "sha512": "sha512-qVXqecsw5KIAFESVSF7KnKtXpLj+/OkZc7CpXVl18LtIa1BXesG02YXNNbs/jjlt2ryO98cmHYgy8kCaq6hoTg==",
       "path": "alpaca.markets/3.6.1",
       "hashPath": "alpaca.markets.3.6.1.nupkg.sha512"
+    },
+    "jQuery/3.5.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-nonOMyjbk06vF05LECisH6HY2dZlKTAAXZ2UdvumY8pWMsWPo949G2KLvdyNWRMWL1Nv9vrYb1IEUVN+U+nt/Q==",
+      "path": "jquery/3.5.0.1",
+      "hashPath": "jquery.3.5.0.1.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Cryptography.Internal/3.1.3": {
       "type": "package",

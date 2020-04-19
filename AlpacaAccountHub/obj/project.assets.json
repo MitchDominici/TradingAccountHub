@@ -16,6 +16,9 @@
           "lib/netstandard2.1/Alpaca.Markets.dll": {}
         }
       },
+      "jQuery/3.5.0.1": {
+        "type": "package"
+      },
       "Microsoft.AspNetCore.Cryptography.Internal/3.1.3": {
         "type": "package",
         "compile": {
@@ -2875,6 +2878,29 @@
         "lib/netstandard2.0/Alpaca.Markets.xml",
         "lib/netstandard2.1/Alpaca.Markets.dll",
         "lib/netstandard2.1/Alpaca.Markets.xml"
+      ]
+    },
+    "jQuery/3.5.0.1": {
+      "sha512": "nonOMyjbk06vF05LECisH6HY2dZlKTAAXZ2UdvumY8pWMsWPo949G2KLvdyNWRMWL1Nv9vrYb1IEUVN+U+nt/Q==",
+      "type": "package",
+      "path": "jquery/3.5.0.1",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Content/Scripts/jquery-3.5.0-vsdoc.js",
+        "Content/Scripts/jquery-3.5.0.js",
+        "Content/Scripts/jquery-3.5.0.min.js",
+        "Content/Scripts/jquery-3.5.0.min.map",
+        "Content/Scripts/jquery-3.5.0.slim.js",
+        "Content/Scripts/jquery-3.5.0.slim.min.js",
+        "Content/Scripts/jquery-3.5.0.slim.min.map",
+        "Tools/common.ps1",
+        "Tools/install.ps1",
+        "Tools/jquery-3.5.0.intellisense.js",
+        "Tools/uninstall.ps1",
+        "jquery.3.5.0.1.nupkg.sha512",
+        "jquery.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Cryptography.Internal/3.1.3": {
@@ -9147,7 +9173,8 @@
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 3.1.1",
       "RestSharp >= 106.10.1",
       "SendGrid >= 9.14.0",
-      "Websocket.Client >= 4.2.3"
+      "Websocket.Client >= 4.2.3",
+      "jQuery >= 3.5.0.1"
     ]
   },
   "packageFolders": {
@@ -9156,11 +9183,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\AlpacaAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
+      "projectUniqueName": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-SymbolLookup\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
       "projectName": "AlpacaAccountHub",
-      "projectPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\AlpacaAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
+      "projectPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-SymbolLookup\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
       "packagesPath": "C:\\Users\\Mitch\\.nuget\\packages\\",
-      "outputPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\AlpacaAccountHub\\AlpacaAccountHub\\obj\\",
+      "outputPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-SymbolLookup\\TradingAccountHub\\AlpacaAccountHub\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Mitch\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -9226,6 +9253,10 @@
           "Websocket.Client": {
             "target": "Package",
             "version": "[4.2.3, )"
+          },
+          "jQuery": {
+            "target": "Package",
+            "version": "[3.5.0.1, )"
           }
         },
         "imports": [
