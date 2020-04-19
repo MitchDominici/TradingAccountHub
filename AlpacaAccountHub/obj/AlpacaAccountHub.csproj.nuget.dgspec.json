@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-SymbolLookup\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj": {}
+    "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-PlaceOrder\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj": {}
   },
   "projects": {
-    "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-SymbolLookup\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj": {
+    "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-PlaceOrder\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-SymbolLookup\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
+        "projectUniqueName": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-PlaceOrder\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
         "projectName": "AlpacaAccountHub",
-        "projectPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-SymbolLookup\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
+        "projectPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-PlaceOrder\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
         "packagesPath": "C:\\Users\\Mitch\\.nuget\\packages\\",
-        "outputPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-SymbolLookup\\TradingAccountHub\\AlpacaAccountHub\\obj\\",
+        "outputPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-PlaceOrder\\TradingAccountHub\\AlpacaAccountHub\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Mitch\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -41,6 +41,10 @@
             "Alpaca.Markets": {
               "target": "Package",
               "version": "[3.6.1, )"
+            },
+            "BlazorWebSocketHelper": {
+              "target": "Package",
+              "version": "[1.0.6, )"
             },
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",

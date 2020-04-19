@@ -12,28 +12,25 @@ namespace AlpacaAccountHub.AlpacaRequests
 {
     public class Assets
     {
-        private static string API_KEY = "";
+        private static string API_KEY = "PKWDFPECPI1K89YQLW1B";
 
-        private static string API_SECRET = "";
+        private static string API_SECRET = "73OFL2dQ8GHtM/AY50MdV58meo77Bhxb3Y2RY6Qk";
 
-        public string AssetTradable()
+        public string AssetTradable(string ticker)
         {
             TickerDetails tickerDetails = new TickerDetails();
             TickerDetails tickerDetailsData = new TickerDetails();
 
-            var client = new RestClient("https://paper-api.alpaca.markets/v2/assets/MBRX");
+            var client = new RestClient($"https://paper-api.alpaca.markets/v2/assets/{ticker}");
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);
             request.AddHeader("APCA-API-KEY-ID", API_KEY);
             request.AddHeader("APCA-API-SECRET-KEY", API_SECRET);
             IRestResponse response = client.Execute(request);
 
-            var responseContent = JObject.Parse(response.Content);
+            TickerDetails tradableResponse = JsonConvert.DeserializeObject<TickerDetails>(response.Content);
 
-            var tradableResponse = responseContent.GetValue("tradable");
-            string tradableData = JsonConvert.SerializeObject(tradableResponse);
-
-            tickerDetails.tradable = tradableData;
+            tickerDetails.tradable = tradableResponse.tradable;
 
             var tickerDetailsJson = JsonConvert.SerializeObject(tickerDetails);
             tickerDetailsData =

@@ -12,6 +12,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using AlpacaAccountHub.AlpacaRequests;
+using AlpacaAccountHub.Data.AlpacaAccount;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace AlpacaAccountHub.PolygonRequests
@@ -20,12 +21,12 @@ namespace AlpacaAccountHub.PolygonRequests
     {
         Assets tradeable = new Assets();
 
-        public TickerDetails SingleTicker(string symbol)
+        public Task<TickerDetails> SingleTicker(string symbol)
         {
             TickerDetails tickerDetails = new TickerDetails();
             TickerDetails tickerDetailsData = new TickerDetails();
             string uri =
-                $"https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers/{symbol}?apiKey=";
+                $"https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers/{symbol}?apiKey={LiveSecrets.API_KEY}";
             Console.WriteLine(symbol);
 
             string response = "";
@@ -39,7 +40,7 @@ namespace AlpacaAccountHub.PolygonRequests
 
             using (StreamReader json =
                 new StreamReader(
-                    @"C:\Day Trading\alpaca\AlpacaAccountHub\feature-SymbolLookup\TradingAccountHub\AlpacaAccountHub\Data\SymbolData\SingleTicker.json")
+                    @"C:\Day Trading\alpaca\AlpacaAccountHub\feature-PlaceOrder\TradingAccountHub\AlpacaAccountHub\Data\SymbolData\SingleTicker.json")
             )
             {
                 response = json.ReadToEnd();
@@ -91,7 +92,7 @@ namespace AlpacaAccountHub.PolygonRequests
             var newTodaysChangePercData = todaysChangePercData.Replace("\"","");
             tickerDetails.todaysChangePerc = newTodaysChangePercData;
 
-            var assetsTradeable = tradeable.AssetTradable();
+            var assetsTradeable = tradeable.AssetTradable(tickerDetails.ticker);
             tickerDetails.tradable = assetsTradeable;
 
             var tickerDetailsJson = JsonConvert.SerializeObject(tickerDetails);
@@ -99,7 +100,7 @@ namespace AlpacaAccountHub.PolygonRequests
                 System.Text.Json.JsonSerializer.Deserialize<TickerDetails>(tickerDetailsJson);
 
 
-            return tickerDetailsData;
+            return Task.FromResult(tickerDetailsData);
         }
 
         public Task<List<Symbols>> TopTwenty()

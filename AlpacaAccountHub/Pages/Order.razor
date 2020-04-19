@@ -5,18 +5,16 @@
 @using AlpacaAccountHub.Data.SymbolData
 @using AlpacaAccountHub.PolygonRequests
 
-
 @attribute [Authorize]
-@inject PlaceOrder Buy
+@inject PlaceOrder SubmitOrder
+@inject PlaceOrder CancelOrder
 @inject AlpacaAccountInfo AccountInfo
 @inject Snapshot SingleTicker
+@inject Positions AllPositions
 
 @inject IJSRuntime JsRuntime
 
-
-
-<h1>Order Hub</h1>
-
+<h1 style="align-content: center">Order Hub</h1>
 
 @if (accountInfo == null)
 {
@@ -24,9 +22,9 @@
 }
 else
 {
-    @if (accountInfo.numberOfDayTrades == 3 )
+    @if (accountInfo.numberOfDayTrades == 4 && positions.numPositions == 0)
     {
-        <h2 style="color:red;">Cannot make day trades today (@accountInfo.today)</h2>
+        <h2 style="color:red;align-content: center" >Cannot make day trades today (@accountInfo.today)</h2>
     }
     else
     {
@@ -37,25 +35,29 @@ else
 
                 <div class="symbolFlex">
                     <label for="symbol">Symbol:</label>
-                    <input type="text" id="symbol" size="5" style="text-transform:uppercase" @bind-value="order.symbol">
+                    <input type="text" id="symbol" size="5" style="text-transform:uppercase" @bind-value="order.symbol" @bind-value:event="oninput">
 
                     <input type="hidden" id="searchSymbolValue" form="searchTicker" style="text-transform:uppercase">
                     <button type="submit" id="searchSymbolButton" form="searchTicker" value="Search" name="searchSymbol" @onclick="SearchSymbol">Search</button>
                 </div>
 
                 <div class="sideFlex">
-                    <button class="buyButton" id="buySell" value="buy"  >Buy</button>
-                    <div class="divider"><p>&#8592; Side &#8594;</p></div>
-                    <button class="sellButton" id="buySell" value="sell" >SELL</button>
+                    <div class="radio-toolbar">
+                        <input type="radio" id="Buy" name="BuySell" value="buy" @onchange="RadioSelection" />
+                        <label for="Buy" id="sideLabels">BUY</label>
+                        <div class="divider"><p>&#8592; Side &#8594;</p></div>
+                        <input type="radio" id="Sell" name="BuySell" value="sell" @onchange="RadioSelection" />
+                        <label for="Sell" id="sideLabels">SELL</label>
+                    </div>
                 </div>
 
-                <div class="limitPrice">
+                <div class="limitPrice" id="textLabels">
                     <label for="limitPrice">Limit Price:</label>
                     <input id="limitPrice" type="text" size="5" @bind-value="order.limitPrice">
                 </div>
 
                 <div class="quantity">
-                    <label for="quantity"># Shares:</label>
+                    <label for="quantity" id="textLabels"># Shares:</label>
                     <input type="text" list="quantity" size="6" @bind-value="order.quantity" />
                     <datalist id="quantity" form="submitOrder">
                         <option value="50">50</option>
@@ -72,18 +74,18 @@ else
                 </div>
 
                 <div class="type">
-                    <label for="type">Order Type:</label>
-                    <select id="type" form="submitOrder" @bind="order.type">
+                    <label for="type" id="textLabels">Order Type:</label>
+                    <select id="type" form="submitOrder" @bind="type">
                         <option value="limit">Limit</option>
                         <option value="market">Market</option>
                         <option value="stopLimit">Stop Limit</option>
                     </select>
                 </div>
 
-                <div class="timeInForce">
+                <div class="timeInForce" id="textLabels">
                     <label for="timeInForce">Time in Force:</label>
-                    <select id="timeInForce" form="submitOrder" @bind="order.type" >
-                        <option value="gtc" >GTC</option>
+                    <select id="timeInForce" form="submitOrder" @bind="timeInForce">
+                        <option value="gtc">GTC</option>
                         <option value="fok">Fill/Kill</option>
                         <option value="day">Day</option>
                     </select>
@@ -110,44 +112,91 @@ else
                     <table class="table-fill">
                         <colgroup span="2"></colgroup>
                         <thead>
-                            <tr>
-                                <th style="align-content:center">@searchedSymbol.ticker </th>
-                                @if (@searchedSymbol.tradable == "true")
-                                {
-                                    <th style="align-content:center">Tradable</th>
-                                }
-                                else
-                                {
-                                    <th style="align-content:center">NOT Tradable</th>
-                                }
+                        <tr>
+                            <th style="align-content:center">@searchedSymbol.ticker </th>
+                            @if (@searchedSymbol.tradable == "true")
+                            {
+                                <th style="align-content:center">Tradable</th>
+                            }
+                            else
+                            {
+                                <th style="align-content:center">NOT Tradable</th>
+                            }
 
-                            </tr>
+                        </tr>
                         </thead>
                         <tbody class="table-hover">
-                            <tr>
-                                <td class="text-left">Previous Day Close:</td>
-                                <td class="text-left">@searchedSymbol.previousDayClose</td>
-                            </tr>
-                            <tr>
-                                <td class="text-left">Last Minute Close:</td>
-                                <td class="text-left">@searchedSymbol.minuteClose</td>
-                            </tr>
-                            <tr>
-                                <td class="text-left">$ Change:</td>
-                                <td class="text-left">@searchedSymbol.todaysChange</td>
-                            </tr>
-                            <tr>
-                                <td class="text-left">% Change:</td>
-                                <td class="text-left">@searchedSymbol.todaysChangePerc</td>
-                            </tr>
-                            <tr>
-                                <td class="text-left">Previous Day Volume:</td>
-                                <td class="text-left">@searchedSymbol.previousDayVolume</td>
-                            </tr>
+                        <tr>
+                            <td class="text-left">Previous Day Close:</td>
+                            <td class="text-left">@searchedSymbol.previousDayClose</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Last Minute Close:</td>
+                            <td class="text-left">@searchedSymbol.minuteClose</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">$ Change:</td>
+                            <td class="text-left">@searchedSymbol.todaysChange</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">% Change:</td>
+                            <td class="text-left">@searchedSymbol.todaysChangePerc</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Previous Day Volume:</td>
+                            <td class="text-left">@searchedSymbol.previousDayVolume</td>
+                        </tr>
                         </tbody>
                     </table>
                 }
             </div>
+        </div>
+
+        <div class="submittedOrder" id="submittedOrder">
+            @if (submittedOrder.submitted == false )
+            {
+                <p style="align-content: center"><strong>Submit an order to see order details</strong></p>
+
+                if (submittedOrder.canceled == true)
+                {
+                    <p style="align-content: center"><strong>Order Cancelled</strong></p>
+                }
+            }
+            else
+            {
+                <table class="table-fill">
+                    <colgroup span="2"></colgroup>
+                    <thead>
+                        <tr>
+                            <th style="align-content:center">@submittedOrder.symbol </th>
+
+                            <th style="align-content: center">
+                                <input id="submitOrderButton" type="submit" name="submitOrder" form="submitOrder" value="CANCEL Order" class="submitOrder" @onclick="Cancel">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-hover">
+                        <tr>
+                            <td class="text-left">Submitted at:</td>
+                            <td class="text-left">@submittedOrder.submitted_at</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Limit Price:</td>
+                            <td class="text-left">@submittedOrder.limit_price</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left"># Shares:</td>
+                            <td class="text-left">@submittedOrder.qty</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Filled at:</td>
+                            <td class="text-left">@submittedOrder.filled_at</td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            }
         </div>
 
 
@@ -156,38 +205,52 @@ else
 
 @code {
 
+    private PositionsData positions;
     private AlpacaAccountData accountInfo;
-    private static OrdersData order = new OrdersData();
+    OrdersData order = new OrdersData();
     public static TickerDetails searchedSymbol = new TickerDetails();
+    public static SubmittedOrder submittedOrder = new SubmittedOrder();
+    public static SubmittedOrder canceledOrder = new SubmittedOrder();
 
+    public string side { get; set; } = "";
     public string lookupSymbol { get; set; } = "";
+    public string type { get; set; } = "limit";
+    public string timeInForce { get; set; } = "gtc";
 
     protected override async Task OnInitializedAsync()
     {
         accountInfo = await AccountInfo.AccountInfo();
+        positions = await AllPositions.AllPositions();
         StateHasChanged();
     }
 
-    public void SearchSymbol()
+    public async Task SearchSymbol()
     {
         lookupSymbol = order.symbol;
         Snapshot single = new Snapshot();
-        searchedSymbol = single.SingleTicker(lookupSymbol);
-        StateHasChanged();
+        searchedSymbol = await single.SingleTicker(lookupSymbol);
+
     }
 
-    public void PlaceOrder()
+    public void RadioSelection(ChangeEventArgs args)
     {
-        Buy.Buy(order);
+        side = args.Value.ToString();
     }
 
-    [JSInvokable]
-    public static void BuySell(string side)
+    public async Task PlaceOrder()
     {
-         order.side = side;
+        PlaceOrder placeOrder = new PlaceOrder();
+        submittedOrder = await placeOrder.SubmitOrder(order, type, timeInForce, side);
+        Console.WriteLine(submittedOrder);
+
+
     }
 
-
-
+    public async Task Cancel()
+    {
+        PlaceOrder cancel = new PlaceOrder();
+        submittedOrder = await cancel.CancelOrder(submittedOrder.id);
+        Console.WriteLine(canceledOrder);
+    }
 
 }

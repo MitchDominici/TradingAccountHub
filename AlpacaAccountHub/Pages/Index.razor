@@ -1,27 +1,65 @@
 ﻿@page "/"
+@using AlpacaAccountHub.AlpacaRequests
+@using AlpacaAccountHub.Data
+
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject AlpacaAccountInfo AccountInfo
 
-<h1>Welcome to your Alpaca Account Hub!</h1>
+@if (accountInfo == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
 
+    <h1 style="align-content: center">Welcome to your Alpaca Account Hub!</h1>
 
+    <div class="AccountHub" id="AccountHub">
 
+        <table class="table-fill">
+            <colgroup span="2"></colgroup>
+            <thead>
+            <tr>
+                <th style="align-content: center" colspan="2">Account Details</th>
+            </tr>
+            </thead>
+            <tbody class="table-hover">
+            <tr>
+                <td class="text-left" colspan="2">@accountInfo.today</td>
+            </tr>
+            <tr>
+                <td class="text-left">Number Of Day Trades:</td>
+                <td class="text-left">@accountInfo.numberOfDayTrades</td>
+            </tr>
+            <tr>
+                <td class="text-left">Day Trade Buying Power:</td>
+                <td class="text-left">@accountInfo.dayTradingPower</td>
+            </tr>
+            <tr>
+                <td class="text-left">Equity:</td>
+                <td class="text-left">@accountInfo.equity</td>
+            </tr>
+            </tbody>
+        </table>
 
+    </div>
 
+}
 
+    @code {
 
+private AlpacaAccountData accountInfo;
 
-
-
-@code {
     protected override async Task OnInitializedAsync()
     {
-       
+        accountInfo = await AccountInfo.AccountInfo();
+
     }
 
     async Task LogUsername()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
-       
+
     }
-}
+    }

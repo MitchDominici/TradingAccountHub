@@ -34,6 +34,12 @@
             window.alert(fired_button);
             DotNet.invokeMethodAsync('AlpacaAccountHub', 'BuySell', fired_button);
         });
+
+        $('input').click(function(e){
+            if (e.ctrlKey) {
+                $(this).prop('checked', false);
+            }
+        });
     </script>
 
 </head>

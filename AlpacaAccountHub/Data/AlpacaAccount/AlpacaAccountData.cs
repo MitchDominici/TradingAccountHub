@@ -6,6 +6,7 @@ namespace AlpacaAccountHub.Data
     {
         public decimal dayTradingPower { get; set; }
 
+        public decimal equity { get; set; }
         public long numberOfDayTrades { get; set; }
 
         public DateTime today { get; set; }

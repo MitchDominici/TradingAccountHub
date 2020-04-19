@@ -48,7 +48,7 @@ namespace AlpacaAccountHub
             services.AddSingleton<AlpacaAccountInfo>();
             services.AddSingleton<Assets>();
             services.AddSingleton<PlaceOrder>();
-
+            services.AddSingleton<Positions>();
             // requires
             // using Microsoft.AspNetCore.Identity.UI.Services;
             // using WebPWrecover.Services;
