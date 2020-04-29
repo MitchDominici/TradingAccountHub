@@ -546,3 +546,5 @@ C:\Day Trading\alpaca\AlpacaAccountHub\feature-PlaceOrder\TradingAccountHub\Alpa
 C:\Day Trading\alpaca\AlpacaAccountHub\feature-PlaceOrder\TradingAccountHub\AlpacaAccountHub\obj\Debug\netcoreapp3.1\Razor\Shared\NavMenu.razor.g.cs
 C:\Day Trading\alpaca\AlpacaAccountHub\feature-PlaceOrder\TradingAccountHub\AlpacaAccountHub\obj\Debug\netcoreapp3.1\Razor\Shared\SurveyPrompt.razor.g.cs
 C:\Day Trading\alpaca\AlpacaAccountHub\feature-PlaceOrder\TradingAccountHub\AlpacaAccountHub\obj\Debug\netcoreapp3.1\Razor\_Imports.razor.g.cs
+C:\Day Trading\alpaca\AlpacaAccountHub\feature-PlaceOrder\TradingAccountHub\AlpacaAccountHub\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\UpdateAccount.razor.g.cs
+C:\Day Trading\alpaca\AlpacaAccountHub\feature-PlaceOrder\TradingAccountHub\AlpacaAccountHub\obj\Debug\netcoreapp3.1\Razor\Pages\UpdateAccount.razor.g.cs

@@ -1,0 +1,73 @@
+﻿@page "/update-account"
+@using AlpacaAccountHub.AlpacaRequests
+@using AlpacaAccountHub.Data
+@using AlpacaAccountHub.Data.ApiKeys
+@using AlpacaAccountHub.UpdateAccount
+@using AlpacaAccountHub.WebSockets
+
+@attribute [Authorize]
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject AlpacaAccountInfo AccountInfo
+@inject UpdateKeys DisplayKey
+@inject UpdateKeys AddKey
+
+@if (accountInfo == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+
+    <div class="orderContainer">
+        <div class="buySellContainer">
+            <h2 style="align-content: center">Update your API keys</h2>
+            <div class="symbolFlex">
+                <label for="apiKey">API_KEY:</label>
+                <input type="text" id="apiKey" @bind-value="keys.API_KEY" @bind-value:event="oninput">
+                <label for="apiSecret">API_SECRET:</label>
+                <input type="text" id="apiSecret" @bind-value="keys.API_SECRET" @bind-value:event="oninput">
+                <button type="submit" id="searchSymbolButton" form="searchTicker" value="Update Keys" name="searchSymbol" @onclick="UpdateKeys">Update Keys</button>
+            </div>
+        </div>
+        <div>
+            @foreach (var key in storedKeys)
+            {
+                <p>Key: @key.API_KEY</p>
+                <p>Secret: @key.API_SECRET</p>
+            }
+        </div>
+    </div>
+
+}
+
+
+@code
+{
+
+    private AlpacaAccountData accountInfo;
+    private AlpacaApiKey keys = new AlpacaApiKey();
+    private string[] apiKeys { get; set; } = new string[2];
+    private List<AlpacaApiKey> storedKeys = new List<AlpacaApiKey>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        accountInfo = await AccountInfo.AccountInfo();
+        storedKeys = DisplayKey.DisplayKey();
+
+    }
+
+    public void UpdateKeys()
+    {
+        apiKeys[0] = keys.API_KEY;
+        apiKeys[1] = keys.API_SECRET;
+        AddKey.AddKey(apiKeys);
+    }
+
+    async Task LogUsername()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+    }
+}

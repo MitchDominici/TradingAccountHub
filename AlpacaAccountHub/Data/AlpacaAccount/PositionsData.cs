@@ -26,4 +26,9 @@ namespace AlpacaAccountHub.Data.AlpacaAccount
 
         public int numPositions { get; set; }
     }
+
+    public class PositionsList
+    {
+        public List<PositionsData> positionsList { get; set; }
+    }
 }

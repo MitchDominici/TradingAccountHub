@@ -29,11 +29,14 @@ namespace AlpacaAccountHub.AlpacaRequests
             accountInfo.dayTradingPower = account.DayTradingBuyingPower;
             accountInfo.today = today;
             accountInfo.equity = account.Equity;
+
+
             
 
             var accountDetailsJson = JsonConvert.SerializeObject(accountInfo);
             accountDetailsData =
                 System.Text.Json.JsonSerializer.Deserialize<AlpacaAccountData>(accountDetailsJson);
+
 
             return accountDetailsData;
         }

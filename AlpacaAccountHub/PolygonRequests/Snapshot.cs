@@ -14,6 +14,7 @@ using System.Threading;
 using AlpacaAccountHub.AlpacaRequests;
 using AlpacaAccountHub.Data.AlpacaAccount;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace AlpacaAccountHub.PolygonRequests
 {
@@ -29,7 +30,7 @@ namespace AlpacaAccountHub.PolygonRequests
                 $"https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers/{symbol}?apiKey={LiveSecrets.API_KEY}";
             Console.WriteLine(symbol);
 
-            string response = "";
+           // string response = "";
 
 
             var client =
@@ -37,7 +38,7 @@ namespace AlpacaAccountHub.PolygonRequests
                 {
                     Timeout = -1
                 };
-
+/*
             using (StreamReader json =
                 new StreamReader(
                     @"C:\Day Trading\alpaca\AlpacaAccountHub\feature-PlaceOrder\TradingAccountHub\AlpacaAccountHub\Data\SymbolData\SingleTicker.json")
@@ -45,10 +46,10 @@ namespace AlpacaAccountHub.PolygonRequests
             {
                 response = json.ReadToEnd();
             }
-
+*/
             var request = new RestRequest(Method.GET);
-           // IRestResponse response = client.Execute(request);
-            var responseContent = JObject.Parse(response);
+            IRestResponse response = client.Execute(request);
+            var responseContent = JObject.Parse(response.Content);
 
             var tickerResponse = responseContent.GetValue("ticker");
             string tickerData = JsonConvert.SerializeObject(tickerResponse);
@@ -181,7 +182,7 @@ namespace AlpacaAccountHub.PolygonRequests
                     //convert retrieved date to TickerDetails class
                     var tickerDetailsJson = JsonConvert.SerializeObject(tickerDetails);
                     tickerDetailsData =
-                        System.Text.Json.JsonSerializer.Deserialize<TickerDetails>(tickerDetailsJson);
+                        JsonSerializer.Deserialize<TickerDetails>(tickerDetailsJson);
                     symbols.tickerDetails.Add(tickerDetailsData);
                     count++;
 

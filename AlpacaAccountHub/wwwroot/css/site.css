@@ -85,7 +85,21 @@ label {
     width: 140px;
     text-align: right;
 }
-
+.submittedOrder {
+    display: flex;
+    flex-direction: row;
+    display: inline-block;
+    margin-left: 0px;
+}
+submittedOrderRow {
+    border-top: 1px solid #C1C3D1;
+    border-bottom-: 1px solid #C1C3D1;
+    color: #666B85;
+    font-size: 16px;
+    font-weight: normal;
+    text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
+    
+}
 ​
 .side {
     margin: 5px;
@@ -111,6 +125,21 @@ label {
     height: auto;
     display: inline-block;
 }
+
+.refresh {
+    
+    
+    
+    
+    border: none;
+    
+    cursor: pointer;
+    
+}
+    .refresh:hover {
+        background-color: white;
+        color: #1b1e24;
+    }
 
 .sellButton {
     background-color: #990a00;
@@ -165,7 +194,16 @@ label {
     margin: 0 auto;
     display: table;
 }
-
+.openPosition {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+    width: 40%;
+    clear: both;
+    margin-left: 0px;
+    height: 400px;
+    display: table-cell;
+}
 /* Add a background color and some padding around the form */
 .buySellContainer {
     border-radius: 5px;
@@ -174,7 +212,6 @@ label {
     width: 40%;
     clear: both;
     margin-left: 0px;
-    
     height: 400px;
     display: table-cell;
 }
@@ -187,14 +224,14 @@ label {
     margin-right: 4px;
     text-align: center;
     height: 400px;
-    display: table-cell;
+    
 }
 
 .table-fill {
     background: white;
     border-radius: 3px;
     border-collapse: collapse;
-    height: 320px;
+    height: 260px;
     margin: auto;
     max-width: 600px;
     padding: 5px;
@@ -203,9 +240,8 @@ label {
     animation: float 5s infinite;
 }
 
-th {
+.table-fill th {
     color: #D5DDE5;
-    ;
     background: #1b1e24;
     border-bottom: 4px solid #9ea7af;
     border-right: 1px solid #343a45;
@@ -217,91 +253,117 @@ th {
     vertical-align: middle;
 }
 
-th:first-child {
-    border-top-left-radius: 3px;
+.table-fill th:first-child {
+        border-top-left-radius: 3px;
+    }
+
+.table-fill th:last-child {
+        border-top-right-radius: 3px;
+        border-right: none;
+    }
+
+.table-fill tr {
+        border-top: 1px solid #C1C3D1;
+        border-bottom-: 1px solid #C1C3D1;
+        color: #666B85;
+        font-size: 16px;
+        font-weight: normal;
+        text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
+    }
+
+.table-fill tr:hover td {
+        background: #4E5066;
+        color: #FFFFFF;
+        border-top: 1px solid #22262e;
+    }
+
+.table-fill tr:first-child {
+        border-top: none;
+    }
+
+.table-fill tr:last-child {
+        border-bottom: none;
+    }
+
+.table-fill tr:nth-child(odd) td {
+        background: #EBEBEB;
+    }
+
+.table-fill tr:nth-child(odd):hover td {
+        background: #4E5066;
+    }
+
+.table-fill tr:last-child td:first-child {
+        border-bottom-left-radius: 3px;
+    }
+
+.table-fill tr:last-child td:last-child {
+        border-bottom-right-radius: 3px;
+    }
+
+.table-fill td {
+        background: #FFFFFF;
+        padding: 20px;
+        text-align: center;
+        vertical-align: middle;
+        font-weight: 300;
+        font-size: 18px;
+        text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+        border-right: 1px solid #C1C3D1;
+    }
+
+.table-fill td:last-child {
+        border-right: 0px;
+    }
+
+.table-fill th.text-left {
+        text-align: left;
+    }
+
+.table-fill th.text-center {
+        text-align: center;
+    }
+
+.table-fill th.text-right {
+        text-align: right;
+    }
+
+.table-fill td.text-left {
+        text-align: left;
+    }
+
+.table-fill td.text-center {
+        text-align: center;
+    }
+
+.table-fill td.text-right {
+        text-align: right;
+    }
+#submittedOrder {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
 }
 
-th:last-child {
-    border-top-right-radius: 3px;
-    border-right: none;
+#submittedOrder td, #customers th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+#submittedOrder tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
 
-tr {
-    border-top: 1px solid #C1C3D1;
-    border-bottom-: 1px solid #C1C3D1;
-    color: #666B85;
-    font-size: 16px;
-    font-weight: normal;
-    text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
+#submittedOrder tr:hover {
+    background-color: #ddd;
 }
 
-tr:hover td {
-    background: #4E5066;
-    color: #FFFFFF;
-    border-top: 1px solid #22262e;
-}
-
-tr:first-child {
-    border-top: none;
-}
-
-tr:last-child {
-    border-bottom: none;
-}
-
-tr:nth-child(odd) td {
-    background: #EBEBEB;
-}
-
-tr:nth-child(odd):hover td {
-    background: #4E5066;
-}
-
-tr:last-child td:first-child {
-    border-bottom-left-radius: 3px;
-}
-
-tr:last-child td:last-child {
-    border-bottom-right-radius: 3px;
-}
-
-td {
-    background: #FFFFFF;
-    padding: 20px;
+#submittedOrder th {
+    padding-top: 12px;
+    padding-bottom: 12px;
     text-align: left;
-    vertical-align: middle;
-    font-weight: 300;
-    font-size: 18px;
-    text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
-    border-right: 1px solid #C1C3D1;
-}
-
-td:last-child {
-    border-right: 0px;
-}
-
-th.text-left {
-    text-align: left;
-}
-
-th.text-center {
-    text-align: center;
-}
-
-th.text-right {
-    text-align: right;
-}
-
-td.text-left {
-    text-align: left;
-}
-
-td.text-center {
-    text-align: center;
-}
-
-td.text-right {
-    text-align: right;
+    background-color: #4CAF50;
+    color: white;
 }
 .postiveGain {
     background-color: #7CFC00;

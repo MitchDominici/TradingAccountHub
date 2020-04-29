@@ -19,6 +19,8 @@ using AlpacaAccountHub.AlpacaRequests;
 using AlpacaAccountHub.Data;
 using AlpacaAccountHub.PolygonRequests;
 using AlpacaAccountHub.Services;
+using AlpacaAccountHub.UpdateAccount;
+using AlpacaAccountHub.WebSockets;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace AlpacaAccountHub
@@ -47,8 +49,10 @@ namespace AlpacaAccountHub
             services.AddSingleton<Snapshot>();
             services.AddSingleton<AlpacaAccountInfo>();
             services.AddSingleton<Assets>();
-            services.AddSingleton<PlaceOrder>();
+            services.AddSingleton<SubmitOrder>();
             services.AddSingleton<Positions>();
+            services.AddSingleton<OpenConnection>();
+            services.AddScoped<UpdateKeys>();
             // requires
             // using Microsoft.AspNetCore.Identity.UI.Services;
             // using WebPWrecover.Services;

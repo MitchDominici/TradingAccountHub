@@ -1,9 +1,14 @@
 ﻿@page "/"
 @using AlpacaAccountHub.AlpacaRequests
 @using AlpacaAccountHub.Data
+@using AlpacaAccountHub.Data.ApiKeys
+@using AlpacaAccountHub.UpdateAccount
+@using AlpacaAccountHub.WebSockets
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject AlpacaAccountInfo AccountInfo
+@inject OpenConnection Stream
+@inject UpdateKeys AddKey
 
 @if (accountInfo == null)
 {
@@ -12,7 +17,7 @@
 else
 {
 
-    <h1 style="align-content: center">Welcome to your Alpaca Account Hub!</h1>
+    <h1 style="align-content: center">Welcome to your Account Hub!</h1>
 
     <div class="AccountHub" id="AccountHub">
 
@@ -20,7 +25,7 @@ else
             <colgroup span="2"></colgroup>
             <thead>
             <tr>
-                <th style="align-content: center" colspan="2">Account Details</th>
+                <th style="align-content: center" colspan="2">Alpaca Account Details</th>
             </tr>
             </thead>
             <tbody class="table-hover">
@@ -44,17 +49,25 @@ else
 
     </div>
 
+
+
 }
 
-    @code {
 
-private AlpacaAccountData accountInfo;
+@code
+{
+
+    private AlpacaAccountData accountInfo;
+    private AlpacaApiKey keys = new AlpacaApiKey();
+    private string[] apiKeys { get; set; } = new string[2];
 
     protected override async Task OnInitializedAsync()
     {
         accountInfo = await AccountInfo.AccountInfo();
+        Stream.Start();
 
     }
+
 
     async Task LogUsername()
     {
@@ -62,4 +75,4 @@ private AlpacaAccountData accountInfo;
         var user = authState.User;
 
     }
-    }
+}

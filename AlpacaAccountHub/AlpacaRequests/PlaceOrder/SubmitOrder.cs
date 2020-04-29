@@ -11,13 +11,27 @@ using RestSharp;
 
 namespace AlpacaAccountHub.AlpacaRequests
 {
-    public class PlaceOrder
+    public class SubmitOrder
     {
         SubmittedOrder OrderDetails = new SubmittedOrder();
         SubmittedOrder OrderDetailsData = new SubmittedOrder();
 
-        public Task<SubmittedOrder > SubmitOrder(OrdersData order, string type, string timeInForce, string side)
+        public Task<SubmittedOrder > PlaceOrder(OrdersData order, string type, string timeInForce, string side)
         {
+            string price = "";
+
+            var symbol = order.symbol.Replace("\"", "").ToUpper();
+
+            if (order.limitPrice == null)
+            {
+                price = $" \"stop_price\": \"{order.stopPrice}\"\r\n  \r\n}} ";
+            }
+            else
+            {
+                price = $" \"limit_price\": \"{order.limitPrice}\"\r\n \r\n}} ";
+            }
+
+
             var client = new RestClient("https://paper-api.alpaca.markets/v2/orders ");
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
@@ -25,11 +39,13 @@ namespace AlpacaAccountHub.AlpacaRequests
             request.AddHeader("APCA-API-SECRET-KEY", PaperSecrets.API_SECRET);
             request.AddHeader("Content-Type", "application/json");
             request.AddParameter("application/json", $"{{\r\n  \"side\": \"{side}\",\r\n " +
-                                                     $" \"symbol\": \"{order.symbol}\",\r\n " +
+                                                     $" \"symbol\": \"{symbol}\",\r\n " +
                                                      $" \"type\": \"{type}\",\r\n " +
                                                      $" \"qty\": \"{order.quantity}\",\r\n " +
                                                      $" \"time_in_force\": \"{timeInForce}\",\r\n  " +
-                                                     $"\"limit_price\": \"{order.limitPrice}\"\r\n  \r\n}}", ParameterType.RequestBody);
+                                                     price, 
+                                                     ParameterType.RequestBody);
+
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
 
@@ -42,6 +58,8 @@ namespace AlpacaAccountHub.AlpacaRequests
             OrderDetails.symbol = submittedOrder.symbol;
             OrderDetails.id = submittedOrder.id;
             OrderDetails.limit_price = submittedOrder.limit_price;
+            OrderDetails.side = submittedOrder.side;
+            OrderDetails.qty = submittedOrder.qty;
             OrderDetails.submitted = true;
 
             var OrderDetailsJson = JsonConvert.SerializeObject(OrderDetails);
@@ -63,7 +81,7 @@ namespace AlpacaAccountHub.AlpacaRequests
             Console.WriteLine(response.Content);
 
             OrderDetails.submitted = false;
-            OrderDetails.canceled = true;
+            OrderDetails.canceled = response.IsSuccessful;
 
             var OrderDetailsJson = JsonConvert.SerializeObject(OrderDetails);
             OrderDetailsData =

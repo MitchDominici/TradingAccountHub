@@ -6,11 +6,12 @@
 @using AlpacaAccountHub.PolygonRequests
 
 @attribute [Authorize]
-@inject PlaceOrder SubmitOrder
-@inject PlaceOrder CancelOrder
+@inject SubmitOrder PlaceOrder
+@inject SubmitOrder CancelOrder
 @inject AlpacaAccountInfo AccountInfo
 @inject Snapshot SingleTicker
 @inject Positions AllPositions
+@inject Positions SinglePosition
 
 @inject IJSRuntime JsRuntime
 
@@ -24,188 +25,236 @@ else
 {
     @if (accountInfo.numberOfDayTrades == 4 && positions.numPositions == 0)
     {
-        <h2 style="color:red;align-content: center" >Cannot make day trades today (@accountInfo.today)</h2>
+        <h2 style="color:red;align-content: center">Cannot make day trades today (@accountInfo.today)</h2>
     }
     else
     {
-        <form id="searchTicker"></form>
-        <form id="submitOrder"></form>
-        <div class="orderContainer">
-            <div class="buySellContainer">
 
-                <div class="symbolFlex">
-                    <label for="symbol">Symbol:</label>
-                    <input type="text" id="symbol" size="5" style="text-transform:uppercase" @bind-value="order.symbol" @bind-value:event="oninput">
 
-                    <input type="hidden" id="searchSymbolValue" form="searchTicker" style="text-transform:uppercase">
-                    <button type="submit" id="searchSymbolButton" form="searchTicker" value="Search" name="searchSymbol" @onclick="SearchSymbol">Search</button>
-                </div>
+    }
+    @if (submittedOrder.submitted == true)
+    {
+        if (submittedOrder.canceled == true)
+        {
+            <p style="align-content: center"><strong>Order Cancelled</strong></p>
+        }
+        else
+        {
+            <div class="submittedOrder" id="submittedOrder">
+                <table>
+                    <colgroup span="2"></colgroup>
+                    <thead>
+                        <tr id="submittedOrderRow">
+                            <td style="height:15px">
+                                <p><strong>@submittedOrder.symbol</strong></p>
+                            </td>
+                            <td style="height:15px">
+                                <p>Submitted at: @submittedOrder.submitted_at</p>
+                            </td>
+                            <td style="height:15px">
+                                <p>Limit Price: @submittedOrder.limit_price</p>
+                            </td>
+                            <td style="height:15px">
+                                <p>@submittedOrder.side</p>
+                            </td>
+                            <td style="height:15px">
+                                <p># of Shares: @submittedOrder.qty</p>
+                            </td>
+                            <td style="height:15px">
+                                <input type="button" value="CANCEL Order" @onclick="Cancel">
+                            </td>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        }
+    }
+    <div class="orderContainer">
+        <div class="buySellContainer">
 
-                <div class="sideFlex">
-                    <div class="radio-toolbar">
-                        <input type="radio" id="Buy" name="BuySell" value="buy" @onchange="RadioSelection" />
-                        <label for="Buy" id="sideLabels">BUY</label>
-                        <div class="divider"><p>&#8592; Side &#8594;</p></div>
-                        <input type="radio" id="Sell" name="BuySell" value="sell" @onchange="RadioSelection" />
-                        <label for="Sell" id="sideLabels">SELL</label>
-                    </div>
-                </div>
+            <div class="symbolFlex">
+                <label for="symbol">Symbol:</label>
+                <input type="text" id="symbol" size="5" style="text-transform:uppercase" @bind-value="order.symbol" @bind-value:event="oninput">
 
-                <div class="limitPrice" id="textLabels">
-                    <label for="limitPrice">Limit Price:</label>
-                    <input id="limitPrice" type="text" size="5" @bind-value="order.limitPrice">
-                </div>
+                <input type="hidden" id="searchSymbolValue" form="searchTicker" style="text-transform:uppercase">
+                <button type="submit" id="searchSymbolButton" form="searchTicker" value="Search" name="searchSymbol" @onclick="SearchSymbol">Search</button>
+            </div>
 
-                <div class="quantity">
-                    <label for="quantity" id="textLabels"># Shares:</label>
-                    <input type="text" list="quantity" size="6" @bind-value="order.quantity" />
-                    <datalist id="quantity" form="submitOrder">
-                        <option value="50">50</option>
-                        <option value="75">75</option>
-                        <option value="100">100</option>
-                        <option value="125">125</option>
-                        <option value="150">150</option>
-                        <option value="175">175</option>
-                        <option value="200">200</option>
-                        <option value="225">225</option>
-                        <option value="250">250</option>
-                    </datalist>
-
-                </div>
-
-                <div class="type">
-                    <label for="type" id="textLabels">Order Type:</label>
-                    <select id="type" form="submitOrder" @bind="type">
-                        <option value="limit">Limit</option>
-                        <option value="market">Market</option>
-                        <option value="stopLimit">Stop Limit</option>
-                    </select>
-                </div>
-
-                <div class="timeInForce" id="textLabels">
-                    <label for="timeInForce">Time in Force:</label>
-                    <select id="timeInForce" form="submitOrder" @bind="timeInForce">
-                        <option value="gtc">GTC</option>
-                        <option value="fok">Fill/Kill</option>
-                        <option value="day">Day</option>
-                    </select>
-                </div>
-                <!--
-                <div>
-                    <label for="stopPrice">Stop Price</label>
-                    <input id="stopPrice" type="text">
-                </div>
-                -->
-                <div>
-                    <input id="submitOrderButton" type="submit" name="submitOrder" form="submitOrder" value="Submit Order" class="submitOrder" @onclick="PlaceOrder">
+            <div class="sideFlex">
+                <div class="radio-toolbar">
+                    <input type="radio" id="Buy" name="BuySell" value="buy" @onchange="RadioSelection" />
+                    <label for="Buy" id="sideLabels">BUY</label>
+                    <div class="divider"><p>&#8592; Side &#8594;</p></div>
+                    <input type="radio" id="Sell" name="BuySell" value="sell" @onchange="RadioSelection" />
+                    <label for="Sell" id="sideLabels">SELL</label>
                 </div>
             </div>
 
+            <div class="limitPrice" id="textLabels">
+                <label for="limitPrice">Limit Price:</label>
+                <input id="limitPrice" type="text" size="5" @bind-value="order.limitPrice">
+            </div>
+            
+            <div id="textLabels">
+                <label for="stopPrice">Stop Price:</label>
+                <input id="stopPrice" type="text" size="5" @bind-value="order.stopPrice" >
+            </div>
 
-            <div class="searchedSymbolContainer" id="lastTrade">
-                @if (@searchedSymbol.previousDayClose == 0)
-                {
-                    <p style="align-content: center"><strong>Search for a stock to display information</strong></p>
-                }
-                else
-                {
-                    <table class="table-fill">
-                        <colgroup span="2"></colgroup>
-                        <thead>
-                        <tr>
-                            <th style="align-content:center">@searchedSymbol.ticker </th>
-                            @if (@searchedSymbol.tradable == "true")
-                            {
-                                <th style="align-content:center">Tradable</th>
-                            }
-                            else
-                            {
-                                <th style="align-content:center">NOT Tradable</th>
-                            }
+            <div class="quantity">
+                <label for="quantity" id="textLabels"># Shares:</label>
+                <input type="text" list="quantity" size="6" @bind-value="order.quantity" />
+                <datalist id="quantity" form="submitOrder">
+                    <option value="50">50</option>
+                    <option value="75">75</option>
+                    <option value="100">100</option>
+                    <option value="125">125</option>
+                    <option value="150">150</option>
+                    <option value="175">175</option>
+                    <option value="200">200</option>
+                    <option value="225">225</option>
+                    <option value="250">250</option>
+                </datalist>
 
-                        </tr>
-                        </thead>
-                        <tbody class="table-hover">
-                        <tr>
-                            <td class="text-left">Previous Day Close:</td>
-                            <td class="text-left">@searchedSymbol.previousDayClose</td>
-                        </tr>
-                        <tr>
-                            <td class="text-left">Last Minute Close:</td>
-                            <td class="text-left">@searchedSymbol.minuteClose</td>
-                        </tr>
-                        <tr>
-                            <td class="text-left">$ Change:</td>
-                            <td class="text-left">@searchedSymbol.todaysChange</td>
-                        </tr>
-                        <tr>
-                            <td class="text-left">% Change:</td>
-                            <td class="text-left">@searchedSymbol.todaysChangePerc</td>
-                        </tr>
-                        <tr>
-                            <td class="text-left">Previous Day Volume:</td>
-                            <td class="text-left">@searchedSymbol.previousDayVolume</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                }
+            </div>
+
+            <div class="type">
+                <label for="type" id="textLabels">Order Type:</label>
+                <select id="type" form="submitOrder" @bind="type">
+                    <option value="limit">Limit</option>
+                    <option value="stop">Stop</option>
+                    <option value="market">Market</option>
+                    <option value="stopLimit">Stop Limit</option>
+                </select>
+            </div>
+
+            <div class="timeInForce" id="textLabels">
+                <label for="timeInForce">Time in Force:</label>
+                <select id="timeInForce" form="submitOrder" @bind="timeInForce">
+                    <option value="gtc">GTC</option>
+                    <option value="fok">Fill/Kill</option>
+                    <option value="day">Day</option>
+                </select>
+            </div>
+            
+          
+            
+            <div>
+                <input id="submitOrderButton" type="submit" name="submitOrder" form="submitOrder" value="Submit Order" class="submitOrder" @onclick="ManualOrder">
             </div>
         </div>
-
-        <div class="submittedOrder" id="submittedOrder">
-            @if (submittedOrder.submitted == false )
+        <div class="openPosition" id="openPosition">
+            @if (positions.symbol == null)
             {
-                <p style="align-content: center"><strong>Submit an order to see order details</strong></p>
-
-                if (submittedOrder.canceled == true)
-                {
-                    <p style="align-content: center"><strong>Order Cancelled</strong></p>
-                }
+                <p style="align-content: center" colspan="2"><strong>No Open Positions</strong></p>
             }
             else
             {
                 <table class="table-fill">
                     <colgroup span="2"></colgroup>
                     <thead>
-                        <tr>
-                            <th style="align-content:center">@submittedOrder.symbol </th>
+                        @if (Convert.ToDecimal(openPosition.unrealized_intraday_plpc) > 0)
+                        {
+                            <tr>
+                                <th style="align-content: center; background-color: green" colspan="2">@openPosition.symbol
+                                    <button @onclick="OnInitializedAsync" id="refresh" style="font-size: 16px; background-color: #1b1e24; color: white; margin: 4px 2px; border-radius: 4px; padding: 6px 12px;">
+                                        Refresh
+                                    </button>   
+                                </th>   
+                                
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <th style="align-content: center; background-color: red" colspan="2">@openPosition.symbol 
+                                    <button @onclick="OnInitializedAsync" id="refresh">Refresh</button>
+                                </th>     
+                               
+                            </tr>
+                        }
 
-                            <th style="align-content: center">
-                                <input id="submitOrderButton" type="submit" name="submitOrder" form="submitOrder" value="CANCEL Order" class="submitOrder" @onclick="Cancel">
-                            </th>
-                        </tr>
                     </thead>
                     <tbody class="table-hover">
                         <tr>
-                            <td class="text-left">Submitted at:</td>
-                            <td class="text-left">@submittedOrder.submitted_at</td>
+                            <td class="text-left">Avg. entry Price:</td>
+                            <td class="text-left">$@openPosition.avg_entry_price</td>
                         </tr>
                         <tr>
-                            <td class="text-left">Limit Price:</td>
-                            <td class="text-left">@submittedOrder.limit_price</td>
+                            <td class="text-left">Current Price:</td>
+                            <td class="text-left">$@openPosition.current_price</td>
                         </tr>
                         <tr>
-                            <td class="text-left"># Shares:</td>
-                            <td class="text-left">@submittedOrder.qty</td>
+                            <td class="text-left">Unrealized Intraday $ Profit Loss:</td>
+                            <td class="text-left">$@openPosition.unrealized_intraday_pl</td>
                         </tr>
                         <tr>
-                            <td class="text-left">Filled at:</td>
-                            <td class="text-left">@submittedOrder.filled_at</td>
+                            <td class="text-left">Unrealized Intraday % Profit/Loss:</td>
+                            <td class="text-left">@openPosition.unrealized_intraday_plpc%</td>
                         </tr>
-
-
                     </tbody>
                 </table>
             }
         </div>
 
+    </div>
 
-    }
+    <div class="searchedSymbolContainer" id="lastTrade">
+        @if (@searchedSymbol.previousDayClose == 0)
+        {
+            <p style="align-content: center"><strong>Search for a stock to display information</strong></p>
+        }
+        else
+        {
+            <table class="table-fill">
+                <colgroup span="2"></colgroup>
+                <thead>
+                    <tr>
+                        <th style="align-content:center">@searchedSymbol.ticker </th>
+                        @if (@searchedSymbol.tradable == "true")
+                        {
+                            <th style="align-content:center">Tradable</th>
+                        }
+                        else
+                        {
+                            <th style="align-content:center">NOT Tradable</th>
+                        }
+
+                    </tr>
+                </thead>
+                <tbody class="table-hover">
+                    <tr>
+                        <td class="text-left">Previous Day Close:</td>
+                        <td class="text-left">@searchedSymbol.previousDayClose</td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">Last Minute Close:</td>
+                        <td class="text-left">@searchedSymbol.minuteClose</td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">$ Change:</td>
+                        <td class="text-left">@searchedSymbol.todaysChange</td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">% Change:</td>
+                        <td class="text-left">@searchedSymbol.todaysChangePerc</td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">Previous Day Volume:</td>
+                        <td class="text-left">@searchedSymbol.previousDayVolume</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+    </div>
+   
 }
 
-@code {
+
+@code
+{
 
     private PositionsData positions;
+    private PositionsData openPosition;
     private AlpacaAccountData accountInfo;
     OrdersData order = new OrdersData();
     public static TickerDetails searchedSymbol = new TickerDetails();
@@ -221,7 +270,8 @@ else
     {
         accountInfo = await AccountInfo.AccountInfo();
         positions = await AllPositions.AllPositions();
-        StateHasChanged();
+        openPosition = await SinglePosition.SinglePosition(positions.symbol);
+
     }
 
     public async Task SearchSymbol()
@@ -237,10 +287,10 @@ else
         side = args.Value.ToString();
     }
 
-    public async Task PlaceOrder()
+    public async Task ManualOrder()
     {
-        PlaceOrder placeOrder = new PlaceOrder();
-        submittedOrder = await placeOrder.SubmitOrder(order, type, timeInForce, side);
+        SubmitOrder placeOrder = new SubmitOrder();
+        submittedOrder = await placeOrder.PlaceOrder(order, type, timeInForce, side);
         Console.WriteLine(submittedOrder);
 
 
@@ -248,9 +298,10 @@ else
 
     public async Task Cancel()
     {
-        PlaceOrder cancel = new PlaceOrder();
+        SubmitOrder cancel = new SubmitOrder();
         submittedOrder = await cancel.CancelOrder(submittedOrder.id);
         Console.WriteLine(canceledOrder);
     }
+
 
 }
