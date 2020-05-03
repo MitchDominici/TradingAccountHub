@@ -11,33 +11,63 @@
 @inject UpdateKeys DisplayKey
 @inject UpdateKeys AddKey
 
-@if (accountInfo == null)
+@if (keys == null)
 {
-    <p><em>Loading...</em></p>
-}
-else
-{
-
-
     <div class="orderContainer">
         <div class="buySellContainer">
             <h2 style="align-content: center">Update your API keys</h2>
             <div class="symbolFlex">
-                <label for="apiKey">API_KEY:</label>
+                <label for="apiKey">LIVE KEY:</label>
                 <input type="text" id="apiKey" @bind-value="keys.API_KEY" @bind-value:event="oninput">
-                <label for="apiSecret">API_SECRET:</label>
+                <label for="apiSecret">LIVE SECRET:</label>
                 <input type="text" id="apiSecret" @bind-value="keys.API_SECRET" @bind-value:event="oninput">
+                <label for="apiKey">Paper KEY:</label>
+                <input type="text" id="apiKey" @bind-value="keys.paper_KEY" @bind-value:event="oninput">
+                <label for="apiSecret">Paper SECRET:</label>
+                <input type="text" id="apiSecret" @bind-value="keys.paper_SECRET" @bind-value:event="oninput">
                 <button type="submit" id="searchSymbolButton" form="searchTicker" value="Update Keys" name="searchSymbol" @onclick="UpdateKeys">Update Keys</button>
             </div>
         </div>
         <div>
             @foreach (var key in storedKeys)
             {
-                <p>Key: @key.API_KEY</p>
-                <p>Secret: @key.API_SECRET</p>
+                <p>Live-Key: @key.API_KEY</p>
+                <p>Live-Secret: @key.API_SECRET</p>
+                <p>Paper-Key: @key.paper_KEY</p>
+                <p>Paper-Secret: @key.paper_SECRET</p>
             }
         </div>
     </div>
+}
+else
+{
+  
+    <div class="orderContainer">
+        <div class="buySellContainer">
+            <h2 style="align-content: center">Update your API keys</h2>
+            <div class="symbolFlex">
+                <label for="apiKey">LIVE KEY:</label>
+                <input type="text" id="apiKey" @bind-value="keys.API_KEY" @bind-value:event="oninput">
+                <label for="apiSecret">LIVE SECRET:</label>
+                <input type="text" id="apiSecret" @bind-value="keys.API_SECRET" @bind-value:event="oninput">
+                <label for="apiKey">Paper KEY:</label>
+                <input type="text" id="apiKey" @bind-value="keys.paper_KEY" @bind-value:event="oninput">
+                <label for="apiSecret">Paper SECRET:</label>
+                <input type="text" id="apiSecret" @bind-value="keys.paper_SECRET" @bind-value:event="oninput">
+                <button type="submit" id="searchSymbolButton" form="searchTicker" value="Update Keys" name="searchSymbol" @onclick="UpdateKeys">Update Keys</button>
+            </div>
+        </div>
+        <div>
+            @foreach (var key in storedKeys)
+            {
+                <p>Live-Key: @key.API_KEY</p>
+                <p>Live-Secret: @key.API_SECRET</p>
+                <p>Paper-Key: @key.paper_KEY</p>
+                <p>Paper-Secret: @key.paper_SECRET</p>
+            }
+        </div>
+    </div>
+  
 
 }
 
@@ -47,12 +77,12 @@ else
 
     private AlpacaAccountData accountInfo;
     private AlpacaApiKey keys = new AlpacaApiKey();
-    private string[] apiKeys { get; set; } = new string[2];
+    private string[] apiKeys { get; set; } = new string[4];
     private List<AlpacaApiKey> storedKeys = new List<AlpacaApiKey>();
 
     protected override async Task OnInitializedAsync()
     {
-        accountInfo = await AccountInfo.AccountInfo();
+        //accountInfo = await AccountInfo.AccountInfo();
         storedKeys = DisplayKey.DisplayKey();
 
     }
@@ -61,6 +91,8 @@ else
     {
         apiKeys[0] = keys.API_KEY;
         apiKeys[1] = keys.API_SECRET;
+        apiKeys[2] = keys.paper_KEY;
+        apiKeys[3] = keys.paper_SECRET;
         AddKey.AddKey(apiKeys);
     }
 

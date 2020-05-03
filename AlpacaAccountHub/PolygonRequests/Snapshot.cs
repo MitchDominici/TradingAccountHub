@@ -13,6 +13,8 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using AlpacaAccountHub.AlpacaRequests;
 using AlpacaAccountHub.Data.AlpacaAccount;
+using AlpacaAccountHub.Data.ApiKeys;
+using AlpacaAccountHub.UpdateAccount;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -21,13 +23,19 @@ namespace AlpacaAccountHub.PolygonRequests
     public class Snapshot
     {
         Assets tradeable = new Assets();
+        
+        string paperKey = "";
+        string paperSecret = "";
+        string LiveKey = "";
+        string LiveSecret = "";
 
         public Task<TickerDetails> SingleTicker(string symbol)
         {
+          
             TickerDetails tickerDetails = new TickerDetails();
             TickerDetails tickerDetailsData = new TickerDetails();
             string uri =
-                $"https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers/{symbol}?apiKey={LiveSecrets.API_KEY}";
+                $"https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers/{symbol}?apiKey={LiveSecrets.API_KEY }";
             Console.WriteLine(symbol);
 
            // string response = "";

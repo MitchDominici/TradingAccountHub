@@ -7,9 +7,12 @@ using System.Diagnostics;
 using WebSocket4Net;
 using System.Security.Authentication;
 using AlpacaAccountHub.AlpacaRequests;
+using AlpacaAccountHub.Data;
 using AlpacaAccountHub.Data.AlpacaAccount;
+using AlpacaAccountHub.Data.ApiKeys;
 using Newtonsoft.Json;
 using AlpacaAccountHub.Data.SymbolData;
+using AlpacaAccountHub.UpdateAccount;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 
@@ -22,17 +25,14 @@ namespace AlpacaAccountHub.WebSockets
         PositionsData positionsData = new PositionsData();
         List<PositionsList> positionsList = new List<PositionsList>();
         PositionsList newPositionsList = new PositionsList();
-        
-
-
-
+       
         static void Stream()
         {
             new OpenConnection().Start();
-            
         }
         public void Start()
         {
+            
             this.websocket = new WebSocket("wss://socket.polygon.io/stocks", sslProtocols: SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls);
             this.websocket.Opened += websocket_Opened;
             this.websocket.Error += websocket_Error;
@@ -44,9 +44,9 @@ namespace AlpacaAccountHub.WebSockets
         private void websocket_Opened(object sender, EventArgs e)
         {
             Console.WriteLine("Connected!");
-            this.websocket.Send($"{{\"action\":\"auth\",\"params\":\"{LiveSecrets.API_KEY}\"}}");
+            this.websocket.Send($"{{\"action\":\"auth\",\"params\":\"{LiveSecrets.API_KEY }\"}}");
             var positions = AllPositions();
-            foreach (var position in positions)
+            foreach (var position in positions.ToList())
             {
                 var pos = position.positionsList;
                 foreach (var symbol in pos)
@@ -75,6 +75,7 @@ namespace AlpacaAccountHub.WebSockets
         }
         public List<PositionsList> AllPositions()
         {
+            List<PositionsData> positions = new List<PositionsData>();
             newPositionsList.positionsList = new List<PositionsData>();
 
             var client = new RestClient("https://paper-api.alpaca.markets/v2/positions ");
@@ -84,8 +85,14 @@ namespace AlpacaAccountHub.WebSockets
             request.AddHeader("APCA-API-SECRET-KEY", PaperSecrets.API_SECRET);
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
+            try
+            {
+                positions = JsonConvert.DeserializeObject<List<PositionsData>>(response.Content);
+            }
+            catch (Newtonsoft.Json.JsonSerializationException e)
+            {
+            }
 
-            var positions = JsonConvert.DeserializeObject<List<PositionsData>>(response.Content);
             positionsInfo.numPositions = positions.Count;
 
             if (positions.Count > 0)
@@ -125,8 +132,6 @@ namespace AlpacaAccountHub.WebSockets
 
         public PositionsData SinglePosition(string symbol)
         {
-            
-
             var client = new RestClient($"https://paper-api.alpaca.markets/v2/positions/{symbol} ");
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);

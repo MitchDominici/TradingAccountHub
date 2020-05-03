@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AlpacaAccountHub.Data.AlpacaAccount;
+using AlpacaAccountHub.Data.ApiKeys;
 using AlpacaAccountHub.Data.SymbolData;
+using AlpacaAccountHub.UpdateAccount;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -16,7 +18,7 @@ namespace AlpacaAccountHub.AlpacaRequests
     {
         PositionsData positionsInfo = new PositionsData();
         PositionsData positionsData = new PositionsData();
-
+      
         public Task<PositionsData> AllPositions()
         {
             var client = new RestClient("https://paper-api.alpaca.markets/v2/positions ");

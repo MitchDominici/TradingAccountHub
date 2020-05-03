@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AlpacaAccountHub.Data.AlpacaAccount;
+using AlpacaAccountHub.Data.ApiKeys;
 using AlpacaAccountHub.Data.SymbolData;
+using AlpacaAccountHub.Data.ApiKeys;
 using AlpacaAccountHub.Pages;
+using AlpacaAccountHub.UpdateAccount;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -13,11 +16,13 @@ namespace AlpacaAccountHub.AlpacaRequests
 {
     public class SubmitOrder
     {
+
         SubmittedOrder OrderDetails = new SubmittedOrder();
         SubmittedOrder OrderDetailsData = new SubmittedOrder();
-
+      
         public Task<SubmittedOrder > PlaceOrder(OrdersData order, string type, string timeInForce, string side)
         {
+           
             string price = "";
 
             var symbol = order.symbol.Replace("\"", "").ToUpper();
@@ -71,6 +76,8 @@ namespace AlpacaAccountHub.AlpacaRequests
 
         public Task<SubmittedOrder> CancelOrder(string orderID)
         {
+            
+
             var client = new RestClient($"https://paper-api.alpaca.markets/v2/orders/{orderID} ");
             client.Timeout = -1;
             var request = new RestRequest(Method.DELETE);

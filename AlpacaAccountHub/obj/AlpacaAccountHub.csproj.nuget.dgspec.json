@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-PlaceOrder\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj": {}
+    "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\MASTER\\AlpacaAccountHub\\AlpacaAccountHub.csproj": {}
   },
   "projects": {
-    "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-PlaceOrder\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj": {
+    "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\MASTER\\AlpacaAccountHub\\AlpacaAccountHub.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-PlaceOrder\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
+        "projectUniqueName": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\MASTER\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
         "projectName": "AlpacaAccountHub",
-        "projectPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-PlaceOrder\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
+        "projectPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\MASTER\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
         "packagesPath": "C:\\Users\\Mitch\\.nuget\\packages\\",
-        "outputPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\feature-PlaceOrder\\TradingAccountHub\\AlpacaAccountHub\\obj\\",
+        "outputPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\MASTER\\AlpacaAccountHub\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Mitch\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -87,6 +87,10 @@
             "jQuery": {
               "target": "Package",
               "version": "[3.5.0.1, )"
+            },
+            "linq2db": {
+              "target": "Package",
+              "version": "[2.9.8, )"
             }
           },
           "imports": [

@@ -7,6 +7,7 @@ using WebSocket4Net;
 using System.Security.Authentication;
 using AlpacaAccountHub.AlpacaRequests;
 using AlpacaAccountHub.Data.AlpacaAccount;
+using AlpacaAccountHub.Data.ApiKeys;
 using Newtonsoft.Json;
 using AlpacaAccountHub.Data.SymbolData;
 using AlpacaAccountHub.Data.WebSocketData;
@@ -17,7 +18,7 @@ namespace AlpacaAccountHub.WebSockets
 {
     public class HandleMessage
     {
-        
+        AlpacaApiKey keys = new AlpacaApiKey();
         public async void HandleOrder(string message)
         {
             OpenConnection getPosition = new OpenConnection();

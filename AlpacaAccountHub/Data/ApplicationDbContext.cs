@@ -19,5 +19,9 @@ namespace AlpacaAccountHub.Data
             : base(options)
         {
         }
+
+        public ApplicationDbContext()
+        {
+        }
     }
 }

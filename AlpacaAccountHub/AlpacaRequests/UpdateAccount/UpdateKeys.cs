@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AlpacaAccountHub.UpdateAccount
 {
-    public class UpdateKeys: Controller
+    public class UpdateKeys
     {
         private readonly ApplicationDbContext _context;
 
@@ -18,14 +18,8 @@ namespace AlpacaAccountHub.UpdateAccount
         {
             _context = context;
         }
-        public void AddKey( string[] apiKeys)
-        {
-            _context.AlpacaApiKey.Update(new AlpacaApiKey { API_KEY = apiKeys[0], API_SECRET = apiKeys[1] });
-            
-            _context.SaveChanges();
-        }
 
-        public List<AlpacaApiKey> DisplayKey()
+        public void AddKey( string[] apiKeys)
         {
             try
             {
@@ -37,7 +31,13 @@ namespace AlpacaAccountHub.UpdateAccount
             {
 
             }
+            _context.AlpacaApiKey.Add(new AlpacaApiKey { API_KEY = apiKeys[0], API_SECRET = apiKeys[1],paper_KEY = apiKeys[2], paper_SECRET = apiKeys[3]});
+            
+            _context.SaveChanges();
+        }
 
+        public List<AlpacaApiKey> DisplayKey()
+        {
             var keys = _context.AlpacaApiKey.ToList();
             return keys;
         }

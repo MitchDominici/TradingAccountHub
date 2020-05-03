@@ -5,65 +5,29 @@
 @using AlpacaAccountHub.UpdateAccount
 @using AlpacaAccountHub.WebSockets
 
+@attribute [Authorize]
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject AlpacaAccountInfo AccountInfo
 @inject OpenConnection Stream
 @inject UpdateKeys AddKey
 
-@if (accountInfo == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
+
 
     <h1 style="align-content: center">Welcome to your Account Hub!</h1>
 
-    <div class="AccountHub" id="AccountHub">
-
-        <table class="table-fill">
-            <colgroup span="2"></colgroup>
-            <thead>
-            <tr>
-                <th style="align-content: center" colspan="2">Alpaca Account Details</th>
-            </tr>
-            </thead>
-            <tbody class="table-hover">
-            <tr>
-                <td class="text-left" colspan="2">@accountInfo.today</td>
-            </tr>
-            <tr>
-                <td class="text-left">Number Of Day Trades:</td>
-                <td class="text-left">@accountInfo.numberOfDayTrades</td>
-            </tr>
-            <tr>
-                <td class="text-left">Day Trade Buying Power:</td>
-                <td class="text-left">@accountInfo.dayTradingPower</td>
-            </tr>
-            <tr>
-                <td class="text-left">Equity:</td>
-                <td class="text-left">@accountInfo.equity</td>
-            </tr>
-            </tbody>
-        </table>
-
-    </div>
+  
 
 
 
-}
 
 
 @code
 {
-
-    private AlpacaAccountData accountInfo;
-    private AlpacaApiKey keys = new AlpacaApiKey();
-    private string[] apiKeys { get; set; } = new string[2];
+    
 
     protected override async Task OnInitializedAsync()
     {
-        accountInfo = await AccountInfo.AccountInfo();
+       
         Stream.Start();
 
     }

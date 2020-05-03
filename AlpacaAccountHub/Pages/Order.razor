@@ -2,8 +2,11 @@
 @using AlpacaAccountHub.AlpacaRequests
 @using AlpacaAccountHub.Data
 @using AlpacaAccountHub.Data.AlpacaAccount
+@using AlpacaAccountHub.Data.ApiKeys
 @using AlpacaAccountHub.Data.SymbolData
 @using AlpacaAccountHub.PolygonRequests
+@using Microsoft.AspNetCore.DataProtection
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
 
 @attribute [Authorize]
 @inject SubmitOrder PlaceOrder

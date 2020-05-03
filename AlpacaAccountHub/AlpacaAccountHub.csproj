@@ -14,6 +14,7 @@
     <PackageReference Include="Alpaca.Markets" Version="3.6.1" />
     <PackageReference Include="BlazorWebSocketHelper" Version="1.0.6" />
     <PackageReference Include="jQuery" Version="3.5.0.1" />
+    <PackageReference Include="linq2db" Version="2.9.8" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.3" />
