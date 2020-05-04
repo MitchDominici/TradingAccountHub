@@ -5,6 +5,7 @@
 @using AlpacaAccountHub.Data.ApiKeys
 @using AlpacaAccountHub.Data.SymbolData
 @using AlpacaAccountHub.PolygonRequests
+@using AlpacaAccountHub.WebSockets
 @using Microsoft.AspNetCore.DataProtection
 @using Microsoft.EntityFrameworkCore.Metadata.Internal
 
@@ -80,7 +81,7 @@ else
                 <input type="text" id="symbol" size="5" style="text-transform:uppercase" @bind-value="order.symbol" @bind-value:event="oninput">
 
                 <input type="hidden" id="searchSymbolValue" form="searchTicker" style="text-transform:uppercase">
-                <button type="submit" id="searchSymbolButton" form="searchTicker" value="Search" name="searchSymbol" @onclick="SearchSymbol">Search</button>
+                <button type="submit" id="searchSymbolButton" form="searchTicker" value="Search" name="searchSymbol" onclick="DisplayChart()">Search</button>
             </div>
 
             <div class="sideFlex">
@@ -146,7 +147,7 @@ else
             </div>
         </div>
         <div class="openPosition" id="openPosition">
-            @if (positions.symbol == null)
+            @if (positions.numPositions == 0)
             {
                 <p style="align-content: center" colspan="2"><strong>No Open Positions</strong></p>
             }
@@ -155,13 +156,11 @@ else
                 <table class="table-fill">
                     <colgroup span="2"></colgroup>
                     <thead>
-                        @if (Convert.ToDecimal(openPosition.unrealized_intraday_plpc) > 0)
+                        @if (Convert.ToDecimal(openPosition.unrealized_intraday_plpc) >= 0)
                         {
                             <tr>
                                 <th style="align-content: center; background-color: green" colspan="2">@openPosition.symbol
-                                    <button @onclick="OnInitializedAsync" id="refresh" style="font-size: 16px; background-color: #1b1e24; color: white; margin: 4px 2px; border-radius: 4px; padding: 6px 12px;">
-                                        Refresh
-                                    </button>   
+                                    
                                 </th>   
                                 
                             </tr>
@@ -170,7 +169,7 @@ else
                         {
                             <tr>
                                 <th style="align-content: center; background-color: red" colspan="2">@openPosition.symbol 
-                                    <button @onclick="OnInitializedAsync" id="refresh">Refresh</button>
+                                   
                                 </th>     
                                
                             </tr>
@@ -200,7 +199,17 @@ else
         </div>
 
     </div>
+    <!-- TradingView Widget BEGIN -->
+    <div id="displayChart">
+        
+    </div>
+    <!-- TradingView Widget END -->
 
+
+
+
+    <!--  Search for a symbol container
+      
     <div class="searchedSymbolContainer" id="lastTrade">
         @if (@searchedSymbol.previousDayClose == 0)
         {
@@ -249,15 +258,15 @@ else
             </table>
         }
     </div>
-   
+    -->
 }
 
 
 @code
 {
 
-    private PositionsData positions;
-    private PositionsData openPosition;
+    private PositionsData positions = new PositionsData();
+    private PositionsData openPosition = new PositionsData();
     private AlpacaAccountData accountInfo;
     OrdersData order = new OrdersData();
     public static TickerDetails searchedSymbol = new TickerDetails();
@@ -272,16 +281,31 @@ else
     protected override async Task OnInitializedAsync()
     {
         accountInfo = await AccountInfo.AccountInfo();
-        positions = await AllPositions.AllPositions();
-        openPosition = await SinglePosition.SinglePosition(positions.symbol);
+
+        System.Timers.Timer t = new System.Timers.Timer();
+        t.Elapsed += async (s, e) =>
+        {
+            positions = await AllPositions.AllPositions();
+            if (positions.numPositions != 0)
+            {
+                openPosition = await SinglePosition.SinglePosition(positions.symbol);
+            }
+
+            await InvokeAsync(StateHasChanged);
+        };
+        t.Interval = 3000;
+        t.Start();
+
 
     }
 
+    [JSInvokable]
     public async Task SearchSymbol()
     {
         lookupSymbol = order.symbol;
         Snapshot single = new Snapshot();
-        searchedSymbol = await single.SingleTicker(lookupSymbol);
+        // JSRuntime.InvokeVoidAsync("DisplayChart");
+        searchedSymbol = await single.SingleTicker(order.symbol);
 
     }
 

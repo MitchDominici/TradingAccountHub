@@ -17,6 +17,7 @@ using AlpacaAccountHub.Areas.Identity;
 using AlpacaAccountHub.Data;
 using AlpacaAccountHub.AlpacaRequests;
 using AlpacaAccountHub.Data;
+using AlpacaAccountHub.Data.Twilio;
 using AlpacaAccountHub.PolygonRequests;
 using AlpacaAccountHub.Services;
 using AlpacaAccountHub.UpdateAccount;
@@ -58,6 +59,8 @@ namespace AlpacaAccountHub
             // using WebPWrecover.Services;
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
+            services.Configure<SMSoptions>(Configuration);
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

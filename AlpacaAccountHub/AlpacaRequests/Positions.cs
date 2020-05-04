@@ -56,6 +56,7 @@ namespace AlpacaAccountHub.AlpacaRequests
 
         public Task<PositionsData> SinglePosition(string symbol)
         {
+
             var client = new RestClient($"https://paper-api.alpaca.markets/v2/positions/{symbol} ");
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);

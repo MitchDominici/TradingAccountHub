@@ -29,25 +29,73 @@
             DotNet.invokeMethodAsync('AlpacaAccountHub', 'SearchSymbol', searchedTicker);
         }
 
-        $("#buySell").click(function () {
+        $("#buySell").click(function() {
             var fired_button = $(this).value();
             window.alert(fired_button);
             DotNet.invokeMethodAsync('AlpacaAccountHub', 'BuySell', fired_button);
         });
 
-        $('input').click(function(e){
+        $('input').click(function(e) {
             if (e.ctrlKey) {
                 $(this).prop('checked', false);
             }
         });
+
+        function DisplayChart() {
+            //get the value of the symbol input box
+            var searchedTicker = document.getElementById("symbol").value;
+            console.log(searchedTicker);
+
+            // get the id of the div on the orders.razor
+            var parentDiv = document.getElementById('displayChart');
+
+            //get the id of the anchor tag to create a link to tradingview
+            var chartLink = document.getElementById('chartLink');
+            chartLink.href = `https://www.tradingview.com/symbols/${searchedTicker}`;
+            //var symbolLink = `${searchedTicker.toUpperCase} Chart`;
+            //var linkText = document.createTextNode(symbolLink);
+            //chartLink.appendChild(linkText);
+
+            //append the StockChart div to the parent div in the order.razor component
+            var stockChart = document.getElementById('StockChart');
+            parentDiv.appendChild(stockChart);
+            parentDiv.style.display = "block";
+            DotNet.invokeMethodAsync('AlpacaAccountHub', 'SearchSymbol', searchedTicker);
+
+            //create the new stock chart using the ticker from the order component 
+            new TradingView.widget(
+                {
+                    "width": 980,
+                    "height": 610,
+                    "symbol": `${searchedTicker}`,
+                    "interval": "D",
+                    "timezone": "Etc/UTC",
+                    "theme": "dark",
+                    "style": "1",
+                    "locale": "en",
+                    "toolbar_bg": "#f1f3f6",
+                    "enable_publishing": false,
+                    "allow_symbol_change": true,
+                    "container_id": "tradingview_893ad"
+                }
+            );
+        }
     </script>
 
 </head>
 
 <body>
-    <app>
-        <component type="typeof(App)" render-mode="ServerPrerendered" />
-    </app>
+<app>
+    <component type="typeof(App)" render-mode="ServerPrerendered" />
+</app>
+<div class="tradingview-widget-container"  id="StockChart">
+    <div id="tradingview_893ad"></div>
+    <div class="tradingview-widget-copyright"><a  rel="noopener" target="_blank" id="chartLink"><span style="color: blue">Chart</span></a> by TradingView</div>
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script type="text/javascript">
+       
+    </script>
+</div>
 
     <div id="blazor-error-ui">
         <environment include="Staging,Production">

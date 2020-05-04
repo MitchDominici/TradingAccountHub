@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\MASTER\\AlpacaAccountHub\\AlpacaAccountHub.csproj": {}
+    "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\fix-Registration\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj": {}
   },
   "projects": {
-    "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\MASTER\\AlpacaAccountHub\\AlpacaAccountHub.csproj": {
+    "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\fix-Registration\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\MASTER\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
+        "projectUniqueName": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\fix-Registration\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
         "projectName": "AlpacaAccountHub",
-        "projectPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\MASTER\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
+        "projectPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\fix-Registration\\TradingAccountHub\\AlpacaAccountHub\\AlpacaAccountHub.csproj",
         "packagesPath": "C:\\Users\\Mitch\\.nuget\\packages\\",
-        "outputPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\MASTER\\AlpacaAccountHub\\obj\\",
+        "outputPath": "C:\\Day Trading\\alpaca\\AlpacaAccountHub\\fix-Registration\\TradingAccountHub\\AlpacaAccountHub\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Mitch\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -79,6 +79,10 @@
             "SendGrid": {
               "target": "Package",
               "version": "[9.14.0, )"
+            },
+            "Twilio": {
+              "target": "Package",
+              "version": "[5.40.0, )"
             },
             "Websocket.Client": {
               "target": "Package",
